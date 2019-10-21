@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import Basket from './Basket.jsx';
 
 const endpoint = "http://localhost:4000/api";
 
@@ -23,8 +25,11 @@ class Home extends React.Component {
         
     }
 
-    selectProduct = id => {
-        console.log(id);
+    selectProduct = data => {   
+        this.props.dispatch({
+            type : "add",
+            data : data
+        });
     }
 
     render(){
@@ -56,7 +61,7 @@ class Home extends React.Component {
                                         ราคา {n.price} บาท
                                     </div>
                                     <div className="selete-product">
-                                        <button onClick={ e => this.selectProduct(n._id) }>เลือก</button>
+                                        <button onClick={ e => this.selectProduct(n) }>เลือก</button>
                                     </div>
                                 </div>
                             )
@@ -76,9 +81,9 @@ class Home extends React.Component {
                                 <div>ราคา</div> 
                                 <div>ลบ</div> 
                             </div>
-                            {/* <div className="items-basket">
-                                
-                            </div> */}
+
+                            <Basket />
+                            
                         </div>
                         <div className="items-total-basket">
                             <div>
@@ -101,8 +106,12 @@ class Home extends React.Component {
             </React.Fragment>
         );
     }
-    
-    
 }
 
-export default Home;
+const mapStateStore = (state) => {
+    return {
+        basket : state.basketReducer
+    };
+}
+
+export default connect(mapStateStore)(Home);

@@ -347,7 +347,7 @@
                   button{
                     width: 100%;
                     border : none;
-                    background-color: #52BE80;
+                    background-color: #52BE80 ;
                     border-bottom: 2px solid rgb(63, 146, 99);
                     padding: 5px 0px;
                     border-radius: 15px;
@@ -406,6 +406,8 @@
                         padding: 5px 10px;
                         background-color: #E74C3C;
                         border-radius: 15px;
+                        border:none;
+                        border-bottom: 3px solid rgb(194, 66, 52);
                     }
                   }
                 }

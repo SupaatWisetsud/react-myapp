@@ -1,13 +1,14 @@
 import React from 'react';
 import Index from './App/Index.jsx';
-import { CookiesProvider } from 'react-cookie';
-import { BrowserRouter } from 'react-router-dom'
-
-import { createStore } from 'redux';
+import { BrowserRouter } from 'react-router-dom';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+// import Cookies from 'universal-cookie';
 
 
-const reducer = (state = "home", action) => {
+// const cookies = new Cookies();
+
+const menuReducer = (state = "home", action) => {
     switch (action.type){
         case "menu" : 
                 state = action.data
@@ -18,15 +19,39 @@ const reducer = (state = "home", action) => {
     return state
 }
 
-const store = createStore(reducer);
+const basketReducer = (state = [], action) => {
+    switch (action.type){
+        case "add" : 
+                
+                let check = false;
+                            
+                state.forEach(n => {
+                    if(n._id === action.data._id){
+                        check = true;
+                    }
+                });
+
+                if(check){
+                    
+                }else{
+                    let obj = Object.assign(action.data, {count : 1});
+                    return state.concat([obj]);
+                }
+                
+            break;
+        default :
+            break;
+    }
+    return state
+}
+
+const store = createStore(combineReducers({menuReducer, basketReducer}));
 
 export default function App() {
     return (
         <Provider store={store}>
             <BrowserRouter>
-                <CookiesProvider>
-                    <Index />
-                </CookiesProvider>
+                <Index />
             </BrowserRouter>
         </Provider>
     );

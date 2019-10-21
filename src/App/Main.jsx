@@ -6,11 +6,12 @@ import Menu from '../components/Menu.jsx';
 
 export default function Main(props){
 
+    if(!localStorage.getItem('token')){
+        return <Redirect to="/login" />
+    }
+
     return(
         <div className="container-index">
-            
-            {!localStorage.getItem('token') && <Redirect to="/login" />}
-
             <Menu />
             <div className="content">
                 <div className="header">

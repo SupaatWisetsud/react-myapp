@@ -7,6 +7,7 @@ import Profile from '../components/Profile.jsx';
 function Content(props){
 
     const { menu } = props;
+    
     if(menu === "home"){
         return <Home />;
     }else if(menu === "profile"){
@@ -16,7 +17,7 @@ function Content(props){
 
 const mapStateStore = (state) => {
     return {
-        menu : state
+        menu : state.menuReducer
     };
 }
 

@@ -27,7 +27,7 @@ function Menu(props) {
                 </p>
             </div>
             <div className="profile">
-                <img src={"http://localhost:4000"+profileImg} alt={username} />
+                <img src={"http://localhost:4000"+profileImg} alt={username} style={status === "a"? {border :"2px solid #AF7AC5"}:{border :"2px solid #85C1E9"}} />
                 <p>คุณ : {firstName} {lastName}</p>
             </div>
             <ul className="select-menu">
@@ -68,7 +68,7 @@ function Menu(props) {
 
 const mapStateStore = (state) => {
     return {
-        menu : state
+        menu : state.menuReducer
     };
 }
 export default connect(mapStateStore)(Menu);
