@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Index from './App/Index.jsx';
+import { CookiesProvider } from 'react-cookie';
+import { BrowserRouter } from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+
+const reducer = (state = "home", action) => {
+    switch (action.type){
+        case "menu" : 
+                state = action.data
+            break;
+        default :
+            break;
+    }
+    return state
 }
 
-export default App;
+const store = createStore(reducer);
+
+export default function App() {
+    return (
+        <Provider store={store}>
+            <BrowserRouter>
+                <CookiesProvider>
+                    <Index />
+                </CookiesProvider>
+            </BrowserRouter>
+        </Provider>
+    );
+}
