@@ -6,6 +6,7 @@ const db = require('./mongoose')();
 const mongoose = require('mongoose');
 const express = require('./config');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const app = express();
 
@@ -15,12 +16,12 @@ const User = mongoose.model('User');
 const Car = mongoose.model('Car');
 
 app.route('/api')
-    .get((req, res, next) => {
+    .get((req, res) => {
         res.json({
             name : "Hello"
         });
     })
-    .post(async (req, res, next) => {
+    .post(async (req, res) => {
         
         const { username, password } = req.body;
 
@@ -41,8 +42,7 @@ app.route('/api')
         });
     });
 
-app.route('/api/list-product')
-    .get( async (req, res, next) => {
+app.get('/api/list-product', async (req, res) => {
         await Car.find({}).exec()
             .then(result => {
                 res.json({
@@ -54,6 +54,144 @@ app.route('/api/list-product')
                 res.sendStatus(404).send(err);
             })
     });
+
+app.post('/api/upload-product',async (req, res) => {
+
+    let car = new Car(req.body);
+    
+    if(req.files !== null){
+        const upload = req.files.file;
+        await upload.mv("./API/img/car/"+upload.name, err => {
+            if(err){
+                res.json({
+                    success : false,
+                    data : err
+                })
+            }
+        });
+        car.image = "/img/car/"+upload.name;
+    }
+
+    await car.save();
+
+    res.json({
+        success : true
+    });
+});
+
+app.post('/api/delete-product',async (req, res) => {
+    
+    await Car.findOneAndRemove({ _id : req.body.id}).exec()
+        .then( car => {
+            res.json({
+                success : true,
+                data : car
+            })
+        })
+        .catch(err =>{
+            res.json({
+                success : false,
+                data : err
+            })
+        });
+});
+
+app.route('/api/emp')
+    .get(async (req, res) => {
+        User.find({}, "-password -salt").exec()
+            .then(user => {
+                res.json({
+                    success : true,
+                    data : user
+                });
+            })
+            .catch(err => {
+                res.json({
+                    success : false,
+                    data : err
+                });
+            });
+    })
+    .post(async (req, res) => {
+
+        await User.findOne({
+            username : req.body.username
+        }).exec()
+        .then(async user => {
+            if(user){
+                res.json({
+                    success : false,
+                    data : "Username นี่มีผู้ใช้แล้ว!"
+                });
+            }else{
+                await User.findOne({
+                    email : req.body.email
+                }).then(async user => {
+                    if(user){
+                        res.json({
+                            success : false,
+                            data : "Email นี่มีผู้ใช้แล้ว!"
+                        });
+                    }else{
+                        //ผ่านทุกขั้นตอน
+                        let user = new User(req.body);
+
+                        if(req.files !== null){
+                            const upload = req.files.file;
+                            await upload.mv("./API/img/user/"+upload.name, err => {
+                                if(err){
+                                    res.json({
+                                        success : false,
+                                        data : err
+                                    })
+                                }
+                            });
+                            user.profileImg = "/img/user/"+upload.name;
+                        }
+
+                        await user.save();
+
+                        res.json({
+                            success : true
+                        });
+                    }
+                })
+            }
+        })
+        
+    })
+    .delete(async (req, res) => {
+        await User.findByIdAndRemove({_id : req.body.id}, (err, user) => {
+            if(err){
+                res.json({
+                    success : false,
+                    data : err
+                });
+            }else{
+                res.json({
+                    success : true,
+                    data : user
+                });
+            }
+        });
+    })
+    .put(async (req, res) => {
+        
+        await User.updateOne({ _id : req.body.id}, { status : req.body.status}, (err, user) =>{
+            if(err){
+                res.json({
+                    success : false,
+                    data : err
+                });
+            }else{
+                res.json({
+                    success : true,
+                    data : user
+                });
+            }
+        })
+    })
+
 
 app.listen(4000, () => {
     console.log("Server is running.. at port 4000");

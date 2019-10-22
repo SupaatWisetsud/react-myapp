@@ -4,7 +4,40 @@ import { decode } from 'jsonwebtoken';
 
 function Menu(props) {
     
+    const data = [
+        {
+            icon : "fas fa-home",
+            name : "home",
+            display : "หน้าหลัก",
+            status : "u"
+        },
+        {
+            icon : "fas fa-id-badge",
+            name : "profile",
+            display : "จัดการโปรไฟล์",
+            status : "u"
+        },
+        // {
+        //     icon : "fas fa-key",
+        //     name : "password",
+        //     display : "แก้ไขรหัสผ่าน",
+        //     status : "u"
+        // },
+        {
+            icon : "fas fa-user-friends",
+            name : "emp",
+            display : "จัดการพนักงาน",
+            status : "a"
+        },
+        {
+            icon : "fas fa-cart-arrow-down",
+            name : "product",
+            display : "จัดการประเภทรถ",
+            status : "a"
+        }
+    ]
     const onClickEvent = (page) => {
+        
         props.dispatch({
             type : "menu",
             data : page
@@ -27,40 +60,25 @@ function Menu(props) {
                 </p>
             </div>
             <div className="profile">
-                <img src={"http://localhost:4000"+profileImg} alt={username} style={status === "a"? {border :"2px solid #AF7AC5"}:{border :"2px solid #85C1E9"}} />
+                <img src={"http://localhost:4000"+profileImg} alt={username} style={status === "a"? {border :"3px solid #AF7AC5"}:{border :"3px solid #85C1E9"}} />
                 <p>คุณ : {firstName} {lastName}</p>
             </div>
             <ul className="select-menu">
-
-                <li onClick={ e => onClickEvent("home")}>
-                    <i className="fas fa-home" />
-                    <p>หน้าหลัก</p>
-                </li>
-                <li onClick={ e => onClickEvent("profile")}>
-                    <i className="fas fa-id-badge" />
-                    <p>จัดการโปรไฟล์</p>
-                </li>
-                <li onClick={ e => onClickEvent("home")}>
-                    <i className="fas fa-key" />
-                    <p>แก้ไขรหัสผ่าน</p>
-                </li>
-                { 
-                    status === "a" &&
-                    <React.Fragment>
-                        <li onClick={ e => onClickEvent("home")}>
-                            <i className="fas fa-user-friends" />
-                            <p>จัดการพนักงาน</p>
-                        </li>
-                        <li onClick={ e => onClickEvent("home")}>
-                            <i className="fas fa-cart-arrow-down"/>
-                            <p>จัดการสินค้า</p>
-                        </li>
-                        <li onClick={ e => onClickEvent("home")}>
-                            <i className="far fa-calendar" />
-                            <p>จัดการสถานะ</p>
-                        </li>
-                    </React.Fragment>
-                }
+                {data.map((n, index) => {
+                    if(status === "a"){
+                        return <li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+                                    <i className={n.icon} />
+                                    <p>{n.display}</p>
+                                </li>
+                    }else{
+                        if(n.status === "u"){
+                            return <li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+                                        <i className={n.icon} />
+                                        <p>{n.display}</p>
+                                    </li>
+                        }
+                    }
+                } )}
             </ul>
         </div>    
     );

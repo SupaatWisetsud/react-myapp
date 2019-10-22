@@ -10,22 +10,26 @@ class Home extends React.Component {
     constructor(props){
         super(props);
         this.state = { 
-            data: []
+            data: [],
+            loading : false
         };
-        this.selectProduct = this.selectProduct.bind();
+        this.addProduct = this.addProduct.bind(this);
     }
     
     async componentDidMount(){
-
+        this.setState({
+            loading : true
+        });
         await axios.get(endpoint + "/list-product").then(res => {
             this.setState({
-                data : res.data.result
+                data : res.data.result,
+                loading : false
             });
         });
         
     }
 
-    selectProduct = data => {   
+    addProduct = data => {   
         this.props.dispatch({
             type : "add",
             data : data
@@ -33,6 +37,7 @@ class Home extends React.Component {
     }
 
     render(){
+        let total = 0;
         return(
             <React.Fragment>
                 <div className="title">
@@ -47,7 +52,7 @@ class Home extends React.Component {
                 </div>
                 <div className="shop">
                     <div className="product">
-                        {this.state.data[0] === undefined && <div className="list-product-loading"><i className="fas fa-spinner"/>Loading...</div> }
+                        {this.state.loading && <div className="list-product-loading"><i className="fas fa-spinner"/>Loading...</div> }
                         {this.state.data.map(n => {
                             return (
                                 <div className="items-product" key={n._id}>
@@ -61,7 +66,7 @@ class Home extends React.Component {
                                         ราคา {n.price} บาท
                                     </div>
                                     <div className="selete-product">
-                                        <button onClick={ e => this.selectProduct(n) }>เลือก</button>
+                                        <button onClick={ e => this.addProduct(n) }>เลือก</button>
                                     </div>
                                 </div>
                             )
@@ -93,13 +98,17 @@ class Home extends React.Component {
                             </div>
                             <div>
                                 <h2>
-                                    200 บาท
+                                    {this.props.basket.forEach( n => {
+                                        let x = Number.parseInt(n.count) * Number.parseInt(n.price);
+                                        total += x;
+                                    })}
+                                    {total} บาท
                                 </h2>
                             </div>
                         </div>
                         <div className="items-confrim-basket">
-                            {/* <a className="confrim">ทำรายการ</a> */}
-                            {/* <a className="all-close">ยกเลิกรายการ</a> */}
+                            <button className="confrim">ทำรายการ</button>
+                            <button onClick={ e => this.props.dispatch({type : "destroy", data : []})} className="all-close">ยกเลิกรายการ</button>
                         </div>
                     </div>
                 </div>

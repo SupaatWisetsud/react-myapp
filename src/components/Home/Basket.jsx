@@ -9,6 +9,28 @@ const style = {
 }
 
 function Basket(props) {
+
+    function addProduct(data){   
+        props.dispatch({
+            type : "add",
+            data : data
+        });
+    }
+
+    function downProduct(data) {
+        props.dispatch({
+            type : "down",
+            data : data
+        });
+    }
+
+    function deleteProduct(data) {
+        props.dispatch({
+            type : "delete",
+            data : data
+        });
+    }
+
     return(
         props.basket.map(n => {
             return (
@@ -20,15 +42,15 @@ function Basket(props) {
                         <h5>{n.name}</h5>
                     </div>
                     <div>
-                        <button style={style}>-</button>
+                        <button onClick={ e => downProduct(n)} style={style}>-</button>
                         <h5 className="items-basket-count">{n.count}</h5>
-                        <button style={style}>+</button>
+                        <button onClick={ e => addProduct(n)} style={style}>+</button>
                     </div>
                     <div>
                         <h5>{n.price}</h5>
                     </div>
                     <div>
-                        <button className="car-basket-close">ลบ</button>
+                        <button onClick={e => deleteProduct(n)} className="car-basket-close">ลบ</button>
                     </div>
                 </div>
             );

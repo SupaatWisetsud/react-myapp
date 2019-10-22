@@ -6,6 +6,7 @@ const compression = require('compression');
 const cors = require('cors');
 const { mkdirSync, existsSync } = require('fs');
 const path = require('path');
+const expressFileupload = require('express-fileupload');
 
 module.exports = () => {
     
@@ -16,6 +17,7 @@ module.exports = () => {
     const app = express();
 
     app.use(cors());
+    app.use(expressFileupload());
 
     if(process.env.NODE_ENV === "development"){
         app.use(morgan('dev'));
