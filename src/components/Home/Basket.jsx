@@ -13,21 +13,21 @@ function Basket(props) {
     function addProduct(data){   
         props.dispatch({
             type : "add",
-            data : data
+            payload : data
         });
     }
 
     function downProduct(data) {
         props.dispatch({
             type : "down",
-            data : data
+            payload : data
         });
     }
 
     function deleteProduct(data) {
         props.dispatch({
             type : "delete",
-            data : data
+            payload : data
         });
     }
 

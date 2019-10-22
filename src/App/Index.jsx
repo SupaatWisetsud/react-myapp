@@ -7,8 +7,16 @@ import Logout from './Logout.jsx';
 
 export default function Index(props) {
 
-    const Project = () => <h1>Project</h1>
-    const NotFoundPage = () => <h1>404</h1>
+    const NotFoundPage = () => {
+        return (
+            <div className="error-page">
+                <div>
+                    <h1>404</h1>
+                    <p>NOT FOUND</p>
+                </div>
+            </div>
+        )
+    }
     
     return (
         <div className="app">
@@ -16,7 +24,6 @@ export default function Index(props) {
                 <Route exact path="/" component={Main} />
                 <Route path="/login" component={Login} />
                 <Route path="/logout" component={Logout} />
-                <Route path="/projects" component={Project} />
                 <Route component={NotFoundPage} />
             </Switch>
         </div>

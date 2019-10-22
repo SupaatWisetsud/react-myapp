@@ -9,11 +9,11 @@ function Logout(props){
     React.useEffect(()=>{
         props.dispatch({
             type : "reset",
-            data : []
+            payload : []
         });
         props.dispatch({
             type : "menu",
-            data : "home"
+            payload : "home"
         });
     })
 

@@ -483,50 +483,50 @@
             display: flex;
             justify-content: space-between;
             text-align: center;
+          }
+          thead,
+          tbody,
+          tr,
+          th,
+          td{
+            padding: 5px;
+            border: 2px solid #D7BDE2;
+            border-radius: 5px;
+            text-align: center;
+          }
 
-            thead,
-            tbody,
-            tr,
-            th,
-            td{
-              padding: 5px;
-              border: 2px solid #D7BDE2;
-              border-radius: 5px;
-            }
+          table{
+            width: 100%;
+          }
+          
+          thead{
+            background-color: #28B163;
+            color: white;
+          }
 
-            table{
-              width: 100%;
+          td{
+            button{
+                border-radius: 15px;
+                padding: 5px 10px;
+                color: white;
+                border: none;
+                outline: none;
+                cursor: pointer;
             }
-            
-            thead{
-              background-color: #28B163;
-              color: white;
+            .edit{
+                background-color: #F7DC6F;
             }
-
-            td{
-              button{
-                  border-radius: 15px;
-                  padding: 5px 10px;
-                  color: white;
-                  border: none;
-                  outline: none;
-                  cursor: pointer;
-              }
-              .edit{
-                  background-color: #F7DC6F;
-              }
-              .delete{
-                  background-color: #E74C3C;
-              }
-              .que-btn{
-                  background-color: #5DADE2;
-              }
-              .success-btn{
-                  background-color: #82E0AA;
-              }
-              .receive-btn{
-                  background-color: #AF7AC5;
-              }
+            .delete{
+                background-color: #E74C3C;
+            }
+            .que-btn{
+                background-color: #5DADE2;
+            }
+            .success-btn{
+                background-color: #82E0AA;
+            }
+            .receive-btn{
+                background-color: #AF7AC5;
             }
           }
           .emp{

@@ -267,7 +267,7 @@ class Emp extends React.Component {
                                                     0{n.phone}
                                                 </td>
                                                 <td>
-                                                    <img src={"http://localhost:4000" + n.profileImg} alt={n.username} style={{width:80,height:60}}/>
+                                                    <img src={"http://localhost:4000" + n.profileImg} alt={n.username} style={{width:80,height:60, objectFit : "cover", borderRadius : 10}}/>
                                                 </td>
                                                 <td>
                                                     {decode(localStorage.getItem('token'))._doc._id !== n._id? 

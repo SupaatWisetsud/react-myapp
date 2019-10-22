@@ -40,7 +40,7 @@ function Menu(props) {
         
         props.dispatch({
             type : "menu",
-            data : page
+            payload : page
         });
     }
 

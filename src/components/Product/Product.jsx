@@ -26,7 +26,7 @@ class Product extends React.Component{
         this.setState({
             loading : true
         });
-        await axios.get(endpoint + "/list-product").then(res => {
+        await axios.get(endpoint + "/product").then(res => {
             this.setState({
                 data : res.data.result,
                 loading : false
@@ -44,14 +44,14 @@ class Product extends React.Component{
         this.setState({
             loading : true
         });
-        let { data } = await axios.post(endpoint +"/delete-product", {id});
+        let { data } = await axios.delete(endpoint +"/product", { data : {id} });
         
         if(data.success){
             
             this.setState({
                 data : []
             })
-            await axios.get(endpoint + "/list-product").then(res => {
+            await axios.get(endpoint + "/product").then(res => {
                 this.setState({
                     data : res.data.result,
                     loading : false
@@ -73,9 +73,9 @@ class Product extends React.Component{
         fd.append("price", this.state.price);
         fd.append("file", this.state.file);
         
-        await axios.post(endpoint +"/upload-product", fd);
+        await axios.post(endpoint +"/product", fd);
 
-        await axios.get(endpoint + "/list-product").then(res => {
+        await axios.get(endpoint + "/product").then(res => {
             this.setState({
                 data : res.data.result,
                 loading : false,

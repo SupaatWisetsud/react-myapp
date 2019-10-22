@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
 import Content from './Content.jsx';
-import Menu from '../components/Menu.jsx';
+import Menu from './Menu.jsx';
 
 export default function Main(props){
-
+    //หน้าหลักที่จะเรียก menu และ content
     if(!localStorage.getItem('token')){
         return <Redirect to="/login" />
     }

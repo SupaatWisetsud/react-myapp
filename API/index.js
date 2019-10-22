@@ -14,13 +14,9 @@ const SECRET = "asdastjke3p523=gisd-jqk2plrfjmkxv-e2i5421-ekdsp";
 
 const User = mongoose.model('User');
 const Car = mongoose.model('Car');
+const Order = mongoose.model('Order');
 
 app.route('/api')
-    .get((req, res) => {
-        res.json({
-            name : "Hello"
-        });
-    })
     .post(async (req, res) => {
         
         const { username, password } = req.body;
@@ -42,7 +38,8 @@ app.route('/api')
         });
     });
 
-app.get('/api/list-product', async (req, res) => {
+app.route('/api/product')
+    .get(async (req, res) => {
         await Car.find({}).exec()
             .then(result => {
                 res.json({
@@ -53,9 +50,8 @@ app.get('/api/list-product', async (req, res) => {
             .catch(err => {
                 res.sendStatus(404).send(err);
             })
-    });
-
-app.post('/api/upload-product',async (req, res) => {
+    })
+    .post(async (req, res) => {
 
     let car = new Car(req.body);
     
@@ -77,24 +73,22 @@ app.post('/api/upload-product',async (req, res) => {
     res.json({
         success : true
     });
-});
-
-app.post('/api/delete-product',async (req, res) => {
-    
-    await Car.findOneAndRemove({ _id : req.body.id}).exec()
-        .then( car => {
-            res.json({
-                success : true,
-                data : car
+    })
+    .delete(async (req, res) => {
+        await Car.findOneAndRemove({ _id : req.body.id}).exec()
+            .then( car => {
+                res.json({
+                    success : true,
+                    data : car
+                })
             })
-        })
-        .catch(err =>{
-            res.json({
-                success : false,
-                data : err
-            })
-        });
-});
+            .catch(err =>{
+                res.json({
+                    success : false,
+                    data : err
+                })
+            });
+    });
 
 app.route('/api/emp')
     .get(async (req, res) => {
@@ -187,6 +181,52 @@ app.route('/api/emp')
                 res.json({
                     success : true,
                     data : user
+                });
+            }
+        })
+    });
+
+app.route('/api/order')
+    .get(async (req, res) => {
+        Order.find({}, (err, order) => {
+            if(err){
+                res.json({
+                    success : false,
+                    data : err
+                });
+            }else{
+                res.json({
+                    success : true,
+                    data : order
+                });
+            }
+        });
+    })
+    .post(async (req, res) => {
+        
+        let total = 0;
+        let order = new Order();
+
+        order.data = req.body.data
+
+        req.body.data.forEach( n => {
+            let x = Number.parseInt(n.count) * Number.parseInt(n.price);
+            total += x;
+        });
+
+        order.price = total;
+        order.status = "q";
+
+        await order.save(err => {
+            if(err){
+                res.json({
+                    success : false,
+                    data : err
+                })
+            }else{
+                res.json({
+                    success : true,
+                    data : order
                 });
             }
         })

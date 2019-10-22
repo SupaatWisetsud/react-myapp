@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import Home from '../components/Home/Home.jsx';
-import Profile from '../components/Profile.jsx';
+import Profile from '../components/Profile/Profile.jsx';
 import Product from '../components/Product/Product.jsx';
 import Emp from '../components/Emp/Emp.jsx';
 
