@@ -71,6 +71,26 @@ class Home extends React.Component {
 
     render(){
         let total = 0;
+        let x = [];
+        this.state.dataOrder.forEach(n => {
+            if(this.state.order === n.status){
+                x.push(
+                    <tr key={n._id}>
+                        <td>{n._id}</td>
+                        <td>
+                            {n.data.map( (x, index) => <p key={index}> {x.name} x{x.count} </p> )}
+                        </td>
+                        <td>{n.price}</td>
+                        <td>{n.dateTime}</td>
+                        <td>
+                            {n.status === 'q' && <button className="que-btn">รอคิวล้าง</button> }
+                            {n.status === 's' && <button className="success-btn">รอรับรถ</button> }
+                            {n.status === 'r' && <button className="receive-btn">พิมใบเสร็จ</button> }
+                        </td>
+                    </tr>
+                );
+            }
+        })
         return(
             <React.Fragment>
                 <div className="title">
@@ -196,25 +216,7 @@ class Home extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.state.dataOrder.map(n => {
-                                        if(this.state.order === n.status){
-                                            return (
-                                                <tr key={n._id}>
-                                                    <td>{n._id}</td>
-                                                    <td>
-                                                        {n.data.map( (x, index) => <p key={index}> {x.name} x{x.count} </p> )}
-                                                    </td>
-                                                    <td>{n.price}</td>
-                                                    <td>{n.dateTime}</td>
-                                                    <td>
-                                                        {n.status === 'q' && <button className="que-btn">รอคิวล้าง</button> }
-                                                        {n.status === 's' && <button className="success-btn">รอรับรถ</button> }
-                                                        {n.status === 'r' && <button className="receive-btn">พิมใบเสร็จ</button> }
-                                                    </td>
-                                                </tr>
-                                            )
-                                        }
-                                    })}
+                                    {x.map(n => n)}
                                 </tbody>
                             </table>
                         </React.Fragment>

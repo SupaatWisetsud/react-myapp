@@ -46,6 +46,23 @@ function Menu(props) {
 
     const { _doc : user } = decode(localStorage.getItem('token'));
     const { status, firstName, lastName, profileImg, username } = user;
+    let x = [];
+    
+    data.forEach((n, index) => {
+        if(status === "a"){
+            x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+                        <i className={n.icon} />
+                        <p>{n.display}</p>
+                    </li>)
+        }else{
+            if(n.status === "u"){
+                x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+                            <i className={n.icon} />
+                            <p>{n.display}</p>
+                        </li>) 
+            }
+        }
+    });
     
     return (
         <div className="menu menu-show">
@@ -64,21 +81,7 @@ function Menu(props) {
                 <p>คุณ : {firstName} {lastName}</p>
             </div>
             <ul className="select-menu">
-                {data.map((n, index) => {
-                    if(status === "a"){
-                        return <li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
-                                    <i className={n.icon} />
-                                    <p>{n.display}</p>
-                                </li>
-                    }else{
-                        if(n.status === "u"){
-                            return <li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
-                                        <i className={n.icon} />
-                                        <p>{n.display}</p>
-                                    </li>
-                        }
-                    }
-                } )}
+                {x.map(n => n)}
             </ul>
         </div>    
     );
