@@ -6,6 +6,12 @@ function Menu(props) {
     
     const data = [
         {
+            icon : "far fa-flag",
+            name : "chart",
+            display : "รายงานยอด",
+            status : "a"
+        },
+        {
             icon : "fas fa-home",
             name : "home",
             display : "หน้าหลัก",
@@ -17,12 +23,12 @@ function Menu(props) {
             display : "จัดการโปรไฟล์",
             status : "u"
         },
-        // {
-        //     icon : "fas fa-key",
-        //     name : "password",
-        //     display : "แก้ไขรหัสผ่าน",
-        //     status : "u"
-        // },
+        {
+            icon : "fas fa-key",
+            name : "password",
+            display : "แก้ไขรหัสผ่าน",
+            status : "u"
+        },
         {
             icon : "fas fa-user-friends",
             name : "emp",

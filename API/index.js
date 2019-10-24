@@ -231,7 +231,44 @@ app.route('/api/order')
             }
         })
     })
+    .put(async (req, res) => {
+        await Order.updateOne({
+            _id : req.body.id
+        },{
+            status : req.body.status,
+            dateTime : new Date()
+        },
+        (err, order) => {
+            if(err){
+                res.json({
+                    success : false,
+                    data : err
+                }); 
+            }else{
+                res.json({
+                    success : true,
+                    data : order
+                });
+            }
+        });
+    })
 
+app.post('/api/list-order', async (req, res) => {
+    //เดือนต้องลบออก 1 จะได้เดือนที่ถูกต้อง (ไม่รู้ทำไหม)
+    let dateStart = req.body.dateStart;
+    let dateEnd = req.body.dateEnd;
+
+    await Order.find({
+        dateTime : { 
+            "$gte" : new Date(dateStart.y, dateStart.m, dateStart.d), 
+            "$lt" : new Date(dateEnd.y, dateEnd.m, dateEnd.d)
+        }
+        }, (err, car) => {
+        res.json({
+            data : car
+        });
+    });
+});
 
 app.listen(4000, () => {
     console.log("Server is running.. at port 4000");

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import Basket from './Basket.jsx';
 
@@ -13,10 +14,18 @@ class Home extends React.Component {
             data: [],
             loading : false,
             order : "h",
-            dataOrder : []
+            dataOrder : [],
+            dateStart : '',
+            dateEnd : ''
         };
         this.addProduct = this.addProduct.bind(this);
         this.confrimProduct = this.confrimProduct.bind(this);
+        this.order = this.order.bind(this);
+        this.changeDateStart = this.changeDateStart.bind(this);
+        this.changeDateEnd = this.changeDateEnd.bind(this);
+        this.seleteOrderDate = this.seleteOrderDate.bind(this);
+        this.uploadStatus = this.uploadStatus.bind(this);
+        this.reset = this.reset.bind(this);
     }
     
     async componentDidMount(){
@@ -63,12 +72,118 @@ class Home extends React.Component {
         }
     }
 
-    order = e => {
-        this.setState({
-            order : e
-        });
+    order = async e => {
+        if(e === "h"){
+            await axios.get(endpoint + "/order").then(res => {
+                this.setState({
+                    dataOrder : res.data.data,
+                });
+            });
+            this.setState({
+                order : e
+            });
+        }else{
+            this.setState({
+                order : e
+            });
+        }
     }
 
+    changeDateStart = e => {
+        this.setState({
+            dateStart : e.target.value
+        })
+    }
+    changeDateEnd = e => {
+        this.setState({
+            dateEnd : e.target.value
+        })
+    }
+
+    seleteOrderDate = async e => {
+        if(this.state.dateStart === '' || this.state.dateEnd === ''){
+            alert("กรุณาใส่เวลาให้ครบ");
+        }else{
+            this.setState({
+                loading : true
+            });
+    
+            let dateStart = this.state.dateStart.split("-");
+            let dateEnd = this.state.dateEnd.split("-");
+            
+            const data = {
+                dateStart : {
+                    y : Number.parseInt(dateStart[0]),
+                    m : Number.parseInt(dateStart[1]) - 1,
+                    d : Number.parseInt(dateStart[2])
+                },
+                dateEnd : {
+                    y : Number.parseInt(dateEnd[0]),
+                    m : Number.parseInt(dateEnd[1]) - 1,
+                    d : Number.parseInt(dateEnd[2]) + 1
+                }
+            }
+            
+            await axios.post(endpoint + "/list-order", data).then(res => {
+                this.setState({
+                    dataOrder : res.data.data,
+                    loading : false
+                });
+            });
+        }
+    }
+
+    uploadStatus = async (id, status) => {
+        this.setState({
+            loading : true
+        });
+        await axios.put(endpoint + "/order", {id, status});
+
+        if(this.state.dateStart === '' || this.state.dateStart === ''){
+            await axios.get(endpoint + "/order").then(res => {
+                this.setState({
+                    dataOrder : res.data.data,
+                    loading : false
+                });
+            });
+        }else{
+            let dateStart = this.state.dateStart.split("-");
+            let dateEnd = this.state.dateEnd.split("-");
+            
+            const data = {
+                dateStart : {
+                    y : Number.parseInt(dateStart[0]),
+                    m : Number.parseInt(dateStart[1]) - 1,
+                    d : Number.parseInt(dateStart[2])
+                },
+                dateEnd : {
+                    y : Number.parseInt(dateEnd[0]),
+                    m : Number.parseInt(dateEnd[1]) - 1,
+                    d : Number.parseInt(dateEnd[2]) + 1
+                }
+            }
+            
+            await axios.post(endpoint + "/list-order", data).then(res => {
+                this.setState({
+                    dataOrder : res.data.data,
+                    loading : false
+                });
+            });
+        }
+    }
+
+    reset = async () => {
+        this.setState({
+            loading : true
+        });
+
+        await axios.get(endpoint + "/order").then(res => {
+            this.setState({
+                dataOrder : res.data.data,
+                loading : false
+            });
+        });
+    }
     render(){
         let total = 0;
         let x = [];
@@ -81,10 +196,10 @@ class Home extends React.Component {
                             {n.data.map( (x, index) => <p key={index}> {x.name} x{x.count} </p> )}
                         </td>
                         <td>{n.price}</td>
-                        <td>{n.dateTime}</td>
+                        <td><Moment format="DD/MM/YYYY : HH:mm">{n.dateTime}</Moment></td>
                         <td>
-                            {n.status === 'q' && <button className="que-btn">รอคิวล้าง</button> }
-                            {n.status === 's' && <button className="success-btn">รอรับรถ</button> }
+                            {n.status === 'q' && <button className="que-btn" onClick={ e => this.uploadStatus(n._id, "s")} >รอคิวล้าง</button> }
+                            {n.status === 's' && <button className="success-btn" onClick={ e => this.uploadStatus(n._id, "r")} >รอรับรถ</button> }
                             {n.status === 'r' && <button className="receive-btn">พิมใบเสร็จ</button> }
                         </td>
                     </tr>
@@ -113,6 +228,7 @@ class Home extends React.Component {
                             this.state.order === "q" && 
                             <React.Fragment>
                                 <button style={{backgroundColor : "#5D6D7E"}} onClick={ e => this.order("h")} >หน้าหลัก</button>
+                                <button style={{backgroundColor : "#D6EAF8"}} disabled >รายการรอคิวล้าง</button>
                                 <button style={{backgroundColor : "#58D68D"}} onClick={ e => this.order("s")} >รานการล้างเสร็จแล้ว</button>
                                 <button style={{backgroundColor : "#C39BD3"}} onClick={ e => this.order("r")} >รายการที่รับรถแล้ว</button>
                             </React.Fragment>
@@ -122,6 +238,7 @@ class Home extends React.Component {
                             <React.Fragment>
                                 <button style={{backgroundColor : "#5D6D7E"}} onClick={ e => this.order("h")} >หน้าหลัก</button>
                                 <button style={{backgroundColor : "#85C1E9"}} onClick={ e => this.order("q")} >รายการรอคิวล้าง</button>
+                                <button style={{backgroundColor : "#D5F5E3"}} disabled >รานการล้างเสร็จแล้ว</button>
                                 <button style={{backgroundColor : "#C39BD3"}} onClick={ e => this.order("r")} >รายการที่รับรถแล้ว</button>
                             </React.Fragment>
                         }
@@ -131,11 +248,56 @@ class Home extends React.Component {
                                 <button style={{backgroundColor : "#5D6D7E"}} onClick={ e => this.order("h")} >หน้าหลัก</button>
                                 <button style={{backgroundColor : "#85C1E9"}} onClick={ e => this.order("q")} >รายการรอคิวล้าง</button>
                                 <button style={{backgroundColor : "#58D68D"}} onClick={ e => this.order("s")} >รานการล้างเสร็จแล้ว</button>
+                                <button style={{backgroundColor : "#E8DAEF"}} disabled >รายการที่รับรถแล้ว</button>
                             </React.Fragment>
                         }
                         
                     </div>
                 </div>
+                {
+                    this.state.order === "h" || 
+                    <div style={{
+                        backgroundColor : "#D6EAF8",
+                        padding : 10,
+                        display : "flex",
+                        justifyContent : "center",
+                        marginTop : 10,
+                        alignItems : "center",
+                        border : "3px solid #5DADE2"
+                    }}>
+                        <p style={{marginRight : 5}}>ตั้งแต่วัน</p>
+                        <input type="date" style={{borderRadius : 5, padding : 5, border : "none"}} onChange={this.changeDateStart} />
+                        <p style={{margin : "0 10px"}}> ถึง </p>
+                        <input type="date" style={{borderRadius : 5, padding : 5, border : "none"}} onChange={this.changeDateEnd} />
+                        <button style={{
+                            margin : "0 10px",
+                            padding : 5, 
+                            borderRadius : 5,
+                            border : "none", 
+                            backgroundColor : "#C39BD3",
+                            color : "#FFF",
+                            borderBottom : "3px solid #AF7AC5",
+                            outline : "none",
+                            cursor : "pointer"
+                        }} onClick={this.seleteOrderDate} >
+                            <i className="fas fa-search" style={{marginRight : 5}}></i>
+                            ค้นหา
+                        </button>
+                        <button style={{
+                            padding : 5, 
+                            borderRadius : 5,
+                            border : "none", 
+                            backgroundColor : "#7DCEA0",
+                            color : "#FFF",
+                            borderBottom : "3px solid #229954",
+                            outline : "none",
+                            cursor : "pointer"
+                        }} onClick={this.reset}>
+                            <i className="fas fa-history" style={{marginRight : 5}}></i>
+                            รีเซ็ต
+                        </button>
+                    </div>
+                }
                 <div className="shop">
                     {
                         this.state.order === "h" && 
@@ -205,20 +367,25 @@ class Home extends React.Component {
                     {
                         this.state.order === "h" || 
                         <React.Fragment>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th>details</th>
-                                        <th>total</th>
-                                        <th>date</th>
-                                        <th>status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {x.map(n => n)}
-                                </tbody>
-                            </table>
+                            {
+                                this.state.loading? 
+                                <div className="list-product-loading"><i className="fas fa-spinner"/>Loading...</div>
+                                : 
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>details</th>
+                                            <th>total</th>
+                                            <th>date</th>
+                                            <th>status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {x.map(n => n)}
+                                    </tbody>
+                                </table>
+                            }
                         </React.Fragment>
                     }
                 </div>

@@ -5,7 +5,10 @@ const style = {
     backgroundColor:"transparent",
     border:"none",
     cursor: "pointer",
-    outline: "none"
+    outline: "none",
+    padding : "0px 5px",
+    color : "#FFF",
+    borderRadius : 5
 }
 
 function Basket(props) {
@@ -42,9 +45,9 @@ function Basket(props) {
                         <h5>{n.name}</h5>
                     </div>
                     <div>
-                        <button onClick={ e => downProduct(n)} style={style}>-</button>
+                        <button onClick={ e => downProduct(n)} style={{...style, backgroundColor : "#F1948A", borderBottom : "2px solid #C0392B"}}>-</button>
                         <h5 className="items-basket-count">{n.count}</h5>
-                        <button onClick={ e => addProduct(n)} style={style}>+</button>
+                        <button onClick={ e => addProduct(n)} style={{...style, backgroundColor : "#5DADE2", borderBottom : "2px solid #2471A3"}}>+</button>
                     </div>
                     <div>
                         <h5>{n.price}</h5>
