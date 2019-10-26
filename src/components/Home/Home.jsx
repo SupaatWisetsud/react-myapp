@@ -2,21 +2,29 @@ import React from 'react';
 import axios from 'axios';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
+import ReactToPrint from "react-to-print";
+
 import Basket from './Basket.jsx';
+import Bill from './Bill.jsx';
 
 const endpoint = "http://localhost:4000/api";
 
 class Home extends React.Component {
-
+    
     constructor(props){
         super(props);
         this.state = { 
             data: [],
             loading : false,
+            error : {
+                status : false,
+                message : ''
+            },
             order : "h",
             dataOrder : [],
             dateStart : '',
-            dateEnd : ''
+            dateEnd : '',
+            dataPrint : {}
         };
         this.addProduct = this.addProduct.bind(this);
         this.confrimProduct = this.confrimProduct.bind(this);
@@ -26,6 +34,8 @@ class Home extends React.Component {
         this.seleteOrderDate = this.seleteOrderDate.bind(this);
         this.uploadStatus = this.uploadStatus.bind(this);
         this.reset = this.reset.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
+        this.setPrint = this.setPrint.bind(this);
     }
     
     async componentDidMount(){
@@ -46,6 +56,8 @@ class Home extends React.Component {
         });
         
     }
+
+    componentRef = React.createRef();
 
     addProduct = data => {   
         this.props.dispatch({
@@ -68,7 +80,12 @@ class Home extends React.Component {
                 });
             }
         }else{
-            alert("คุณไม่มีข้อมูลในรายการ!!");
+            this.setState({
+                error : {
+                    status : true,
+                    message : "คุณไม่มีข้อมูลในรายการ!!"
+                }
+            });
         }
     }
 
@@ -102,7 +119,12 @@ class Home extends React.Component {
 
     seleteOrderDate = async e => {
         if(this.state.dateStart === '' || this.state.dateEnd === ''){
-            alert("กรุณาใส่เวลาให้ครบ");
+            this.setState({
+                error : {
+                    status : true,
+                    message : "กรุณาใส่เวลาให้ครบ!!"
+                }
+            });
         }else{
             this.setState({
                 loading : true
@@ -184,6 +206,22 @@ class Home extends React.Component {
             });
         });
     }
+
+    onDismiss = () => {
+        this.setState({
+            error : {
+                status : false,
+                message : ''
+            }
+        })
+    }
+
+    setPrint = n => {
+        this.setState({
+            dataPrint : n
+        })
+    }
+
     render(){
         let total = 0;
         let x = [];
@@ -200,7 +238,14 @@ class Home extends React.Component {
                         <td>
                             {n.status === 'q' && <button className="que-btn" onClick={ e => this.uploadStatus(n._id, "s")} >รอคิวล้าง</button> }
                             {n.status === 's' && <button className="success-btn" onClick={ e => this.uploadStatus(n._id, "r")} >รอรับรถ</button> }
-                            {n.status === 'r' && <button className="receive-btn">พิมใบเสร็จ</button> }
+                            {n.status === 'r' && 
+                                <div onClick={ e => this.setPrint(n)}>
+                                    <ReactToPrint
+                                        trigger={() => <button className="receive-btn" >พิมใบเสร็จ</button>}
+                                        content={() => this.componentRef}
+                                    />
+                                </div>
+                            }
                         </td>
                     </tr>
                 );
@@ -208,6 +253,18 @@ class Home extends React.Component {
         })
         return(
             <React.Fragment>
+                {
+                    this.state.error.status && 
+                    <div className="container-error">
+                        <div className="flash">
+                            {this.state.error.message}
+                            <button className="close-popup" onClick={this.onDismiss}>X</button>
+                        </div>
+                    </div>
+                }
+                <div style={{display : "none"}}>
+                    <Bill data={this.state.dataPrint} ref={el => (this.componentRef = el)} />
+                </div>
                 <div className="title">
                     <div className="items-title">
                         {this.state.order === "h" && <h2>ระบบจัดการหน้าร้าน Car ca Service</h2>}

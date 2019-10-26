@@ -5,7 +5,7 @@ import Home from '../components/Home/Home.jsx';
 import Profile from '../components/Profile/Profile.jsx';
 import Product from '../components/Product/Product.jsx';
 import Emp from '../components/Emp/Emp.jsx';
-import Chart from '../components/Chart/Chart.jsx';
+import Report from '../components/Report/Report.jsx';
 import Password from '../components/Password/Password.jsx';
 
 function Content(props){
@@ -21,7 +21,7 @@ function Content(props){
     }else if(menu === "emp"){
         return <Emp />
     }else if(menu === "chart"){
-        return <Chart />
+        return <Report />
     }else if(menu === "password"){
         return <Password />
     }

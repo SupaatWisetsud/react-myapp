@@ -8,6 +8,7 @@ export default function Login(props) {
 
     const [loading, setLoading] = useState(false);
     const [redirect, setRedirect] = useState(false);
+    const [error, setError] = useState(false);
 
     let username, password;
 
@@ -22,25 +23,35 @@ export default function Login(props) {
         
         setLoading(true);
 
-        await axios.post(endpoint, data)
+        await axios.post(endpoint + "/user", data)
         .then(res => {
             setLoading(false);
             if(res.data.success){
                 localStorage.setItem("token", res.data.token);
                 setRedirect(true);
             }else{
-                alert("Username หรือ Password ของท่านไม่ถูกต้อง");
+                setError(true);
             }
         });
     }
+
+    const onDismiss = () => setError(false);
 
     return (
         
         <div className="warpper">
             {redirect && <Redirect to="/" />}
             {localStorage.getItem("token") && <Redirect to="/" />}
-
+            
             <div className="container">
+                {error && 
+                    <div className="container-error">
+                        <div className="flash">
+                            Username หรือ Password ของท่านไม่ถูกต้อง!
+                            <button className="close-popup" onClick={onDismiss}>X</button>
+                        </div>
+                    </div>
+                }
                 <form id="form-login" onSubmit={ headlerSubmit }>
                     <div className="logo">
                         <h1>

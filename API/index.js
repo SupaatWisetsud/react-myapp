@@ -2,11 +2,10 @@
 
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
-const db = require('./mongoose')();
+require('./mongoose')();
 const mongoose = require('mongoose');
 const express = require('./config');
 const jwt = require('jsonwebtoken');
-const path = require('path');
 
 const app = express();
 
@@ -16,7 +15,7 @@ const User = mongoose.model('User');
 const Car = mongoose.model('Car');
 const Order = mongoose.model('Order');
 
-app.route('/api')
+app.route('/api/user')
     .post(async (req, res) => {
         
         const { username, password } = req.body;
@@ -34,6 +33,44 @@ app.route('/api')
                     token,
                     success : true
                 });
+            }
+        });
+    })
+    .put(async (req, res) => {
+        const { id, password, newPassword } = req.body;
+        
+        User.findById(id, (err, user) => {
+            if(err){
+                res.json({
+                    success : false,
+                    data : err
+                }); 
+            }else{
+                if(!user || !user.authPassword(password)){
+                    res.json({
+                        success : false,
+                        data : "รหัสเก่าของท่านไม่ถูกต้อง!"
+                    });
+                }else{
+                    
+                    User.updateOne({
+                        _id : id
+                    },{
+                        password : user.hashPassword(newPassword, user.salt)
+                    }, (err, user) => {
+                        if(err){
+                            res.json({
+                                success : false,
+                                data : err
+                            });
+                        }else{
+                            res.json({
+                                success : true,
+                                data : user
+                            });
+                        }
+                    });
+                }
             }
         });
     });
