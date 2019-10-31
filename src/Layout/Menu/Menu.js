@@ -1,8 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { decode } from 'jsonwebtoken';
 
-function Menu(props) {
+export default ({onClickEvent, menu}) => {
     
     const data = [
         {
@@ -37,18 +36,12 @@ function Menu(props) {
         },
         {
             icon : "fas fa-cart-arrow-down",
-            name : "product",
+            name : "category",
             display : "จัดการประเภทรถ",
             status : "a"
         }
     ]
-    const onClickEvent = (page) => {
-        
-        props.dispatch({
-            type : "menu",
-            payload : page
-        });
-    }
+
 
     const { _doc : user } = decode(localStorage.getItem('token'));
     const { status, firstName, lastName, profileImg, username } = user;
@@ -56,13 +49,13 @@ function Menu(props) {
     
     data.forEach((n, index) => {
         if(status === "a"){
-            x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+            x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={menu === n.name? {backgroundColor:"#5499C7"}:{}} >
                         <i className={n.icon} />
                         <p>{n.display}</p>
                     </li>)
         }else{
             if(n.status === "u"){
-                x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={props.menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+                x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={menu === n.name? {backgroundColor:"#5499C7"}:{}} >
                             <i className={n.icon} />
                             <p>{n.display}</p>
                         </li>) 
@@ -92,10 +85,3 @@ function Menu(props) {
         </div>    
     );
 }
-
-const mapStateStore = (state) => {
-    return {
-        menu : state.menuReducer
-    };
-}
-export default connect(mapStateStore)(Menu);

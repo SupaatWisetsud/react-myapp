@@ -1,21 +1,5 @@
-import React from 'react';
-import Index from './App/Index.jsx';
-import { BrowserRouter } from 'react-router-dom';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
 
-const menuReducer = (state = "home", action) => {
-    switch (action.type){
-        case "menu" : 
-                state = action.payload
-            break;
-        default :
-            break;
-    }
-    return state
-}
-
-const basketReducer = (state = [], action) => {
+export default (state = [], action) => {
     switch (action.type){
         case "add" : 
                 
@@ -77,16 +61,4 @@ const basketReducer = (state = [], action) => {
             break;
     }
     return state
-}
-
-const store = createStore(combineReducers({menuReducer, basketReducer}));
-
-export default function App() {
-    return (
-        <Provider store={store}>
-            <BrowserRouter>
-                <Index />
-            </BrowserRouter>
-        </Provider>
-    );
 }

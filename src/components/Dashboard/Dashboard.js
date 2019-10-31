@@ -4,8 +4,8 @@ import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import ReactToPrint from "react-to-print";
 
-import Basket from './Basket.jsx';
-import Bill from './Bill.jsx';
+import Basket from './Basket';
+import Bill from './Bill';
 
 const endpoint = "http://localhost:4000/api";
 

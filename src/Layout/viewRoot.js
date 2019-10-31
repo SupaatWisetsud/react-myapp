@@ -1,25 +1,35 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
-import Content from './Content.jsx';
-import Menu from './Menu.jsx';
+import Content from './Content';
+import { connect } from 'react-redux';
 
-export default function Main(props){
+import Menu from './Menu';
+
+const viewRoot = ({menu, dispatch}) => {
     //หน้าหลักที่จะเรียก menu และ content
+
+    const onClickEvent = (page) => {
+        dispatch({
+            type : "menu",
+            payload : page
+        });
+    }
+
     if(!localStorage.getItem('token')){
         return <Redirect to="/login" />
     }
 
     return(
         <div className="container-index">
-            <Menu />
+            <Menu onClickEvent={onClickEvent} menu={menu}/>
             <div className="content">
                 <div className="header">
                     <i className="fas fa-bars bar"></i>
                     <Link to="/logout" id="logout">ออกจากระบบ</Link>
                 </div>
                 <div className="sub-content">
-                    <Content />
+                    <Content menu={menu} />
                 </div>
             </div>
             
@@ -27,3 +37,10 @@ export default function Main(props){
     );
 }
 
+
+const mapStateStore = (state) => {
+    return {
+        menu : state.menuReducer
+    };
+}
+export default connect(mapStateStore)(viewRoot);
