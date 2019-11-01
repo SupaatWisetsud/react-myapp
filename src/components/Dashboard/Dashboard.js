@@ -14,10 +14,7 @@ class Home extends React.Component {
     state = { 
         data: [],
         loading : false,
-        error : {
-            status : false,
-            message : ''
-        },
+        error : { status : false, message : ''},
         order : "h",
         dataOrder : [],
         dateStart : '',
@@ -26,30 +23,12 @@ class Home extends React.Component {
     };
     componentRef = React.createRef();
     async componentDidMount(){
-        this.setState({
-            loading : true
-        });
-        await axios.get(endpoint + "/product").then(res => {
-            this.setState({
-                data : res.data.result
-            });
-        });
-
-        await axios.get(endpoint + "/order").then(res => {
-            this.setState({
-                dataOrder : res.data.data,
-                loading : false
-            });
-        });
-        
+        this.setState({loading : true});
+        await axios.get(endpoint + "/product").then(res => {this.setState({ data : res.data.result })});
+        await axios.get(endpoint + "/order").then(res => {this.setState({ dataOrder : res.data.data, loading : false })});
     }
 
-    addProduct = data => {   
-        this.props.dispatch({
-            type : "add",
-            payload : data
-        });
-    }
+    addProduct = data => {this.props.dispatch({type : "add", payload : data})}
 
     confrimProduct = async () => {
         if(this.props.basket[0] !== undefined){
@@ -59,61 +38,30 @@ class Home extends React.Component {
                 
                 this.props.dispatch({type : "reset", payload : []});
                 
-
-                await axios.get(endpoint + "/order").then(res => {
-                    this.setState({ dataOrder : res.data.data});
-                });
+                await axios.get(endpoint + "/order").then(res => { this.setState({ dataOrder : res.data.data}) });
             }
         }else{
-            this.setState({
-                error : {
-                    status : true,
-                    message : "คุณไม่มีข้อมูลในรายการ!!"
-                }
-            });
+            this.setState({error : {status : true, message : "คุณไม่มีข้อมูลในรายการ!!"}});
         }
     }
 
     order = async e => {
         if(e === "h"){
-            await axios.get(endpoint + "/order").then(res => {
-                this.setState({
-                    dataOrder : res.data.data,
-                });
-            });
-            this.setState({
-                order : e
-            });
+            await axios.get(endpoint + "/order").then(res => { this.setState({dataOrder : res.data.data,}) });
+            this.setState({order : e});
         }else{
-            this.setState({
-                order : e
-            });
+            this.setState({order : e});
         }
     }
 
-    changeDateStart = e => {
-        this.setState({
-            dateStart : e.target.value
-        })
-    }
-    changeDateEnd = e => {
-        this.setState({
-            dateEnd : e.target.value
-        })
-    }
+    changeDateStart = e => {this.setState({dateStart : e.target.value})}
+    changeDateEnd = e => {this.setState({dateEnd : e.target.value})}
 
     seleteOrderDate = async e => {
         if(this.state.dateStart === '' || this.state.dateEnd === ''){
-            this.setState({
-                error : {
-                    status : true,
-                    message : "กรุณาใส่เวลาให้ครบ!!"
-                }
-            });
+            this.setState({error : {status : true, message : "กรุณาใส่เวลาให้ครบ!!"}});
         }else{
-            this.setState({
-                loading : true
-            });
+            this.setState({loading : true});
     
             let dateStart = this.state.dateStart.split("-");
             let dateEnd = this.state.dateEnd.split("-");
@@ -131,28 +79,16 @@ class Home extends React.Component {
                 }
             }
             
-            await axios.post(endpoint + "/list-order", data).then(res => {
-                this.setState({
-                    dataOrder : res.data.data,
-                    loading : false
-                });
-            });
+            await axios.post(endpoint + "/list-order", data).then(res => { this.setState({dataOrder : res.data.data, loading : false}) });
         }
     }
 
     uploadStatus = async (id, status) => {
-        this.setState({
-            loading : true
-        });
+        this.setState({loading : true});
         await axios.put(endpoint + "/order", {id, status});
 
         if(this.state.dateStart === '' || this.state.dateStart === ''){
-            await axios.get(endpoint + "/order").then(res => {
-                this.setState({
-                    dataOrder : res.data.data,
-                    loading : false
-                });
-            });
+            await axios.get(endpoint + "/order").then(res => {this.setState({ dataOrder : res.data.data, loading : false})});
         }else{
             let dateStart = this.state.dateStart.split("-");
             let dateEnd = this.state.dateEnd.split("-");
@@ -170,42 +106,17 @@ class Home extends React.Component {
                 }
             }
             
-            await axios.post(endpoint + "/list-order", data).then(res => {
-                this.setState({
-                    dataOrder : res.data.data,
-                    loading : false
-                });
-            });
+            await axios.post(endpoint + "/list-order", data).then(res => { this.setState({ dataOrder : res.data.data, loading : false}) });
         }
     }
 
     reset = async () => {
-        this.setState({
-            loading : true
-        });
-
-        await axios.get(endpoint + "/order").then(res => {
-            this.setState({
-                dataOrder : res.data.data,
-                loading : false
-            });
-        });
+        this.setState({loading : true});
+        await axios.get(endpoint + "/order").then(res => { this.setState({ dataOrder : res.data.data, loading : false})});
     }
 
-    onDismiss = () => {
-        this.setState({
-            error : {
-                status : false,
-                message : ''
-            }
-        })
-    }
-
-    setPrint = n => {
-        this.setState({
-            dataPrint : n
-        })
-    }
+    onDismiss = () => {this.setState({error : {status : false,message : ''}})}
+    setPrint = n => {this.setState({dataPrint : n})}
 
     render(){
         return(
@@ -269,10 +180,8 @@ class Home extends React.Component {
     }
 }
 
-const mapStateStore = (state) => {
-    return {
-        basket : state.basketReducer
-    };
-}
+const mapStateStore = (state) => ({
+    basket : state.basketReducer
+})
 
 export default connect(mapStateStore)(Home);

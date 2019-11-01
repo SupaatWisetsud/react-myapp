@@ -17,49 +17,26 @@ class CarCategory extends React.Component{
     };
 
     async componentDidMount(){
-        this.setState({
-            loading : true
-        });
-        await axios.get(endpoint + "/product").then(res => {
-            this.setState({
-                data : res.data.result,
-                loading : false
-            });
-        });
+        this.setState({ loading : true });
+        await axios.get(endpoint + "/product").then(res => { this.setState({ data : res.data.result, loading : false })});
     }
     
-    addCategory = () => {
-        this.setState({
-            statusAddCategory : !this.state.statusAddCategory
-        });  
-    }
+    addCategory = () => { this.setState({ statusAddCategory : !this.state.statusAddCategory }) }
 
     deleteProduct = async id => {
-        this.setState({
-            loading : true
-        });
+        this.setState({ loading : true });
         let { data } = await axios.delete(endpoint +"/product", { data : {id} });
         
         if(data.success){
-            
-            this.setState({
-                data : []
-            })
-            await axios.get(endpoint + "/product").then(res => {
-                this.setState({
-                    data : res.data.result,
-                    loading : false
-                });
-            }); 
+            this.setState({ data : [] })
+            await axios.get(endpoint + "/product").then(res => { this.setState({ data : res.data.result, loading : false }) }); 
         }
     }
 
     submitAddCategory = async e => {
         e.preventDefault();
 
-        this.setState({
-            loading : true
-        });
+        this.setState({loading : true});
 
         let fd = new FormData();
 
@@ -81,49 +58,36 @@ class CarCategory extends React.Component{
         });
     }
 
-    setName = event => {
-        this.setState({
-            name : event.target.value
-        });
-    }
-    setPrice = event => {
-        this.setState({
-            price : event.target.value
-        });
-    }
-    setFile = event => {
-        this.setState({
-            file : event.target.files[0]
-        });
-    }
+    setName = event => {this.setState({name : event.target.value})}
+    setPrice = event => {this.setState({price : event.target.value})}
+    setFile = event => {this.setState({file : event.target.files[0]})}
 
     render(){
-        if(this.state.loading){
-            return <div className="isloading"><i className="fas fa-spinner"/>Loading...</div> 
-        }
-        else{
-            return (
-                <React.Fragment>
-                    <div className="title">
-                        <TitleCategory val="รายการประเภทของรถ" />
-                        <TitleBtnCategory 
-                        addCategory={this.addCategory} 
-                        statusAddCategory={this.state.statusAddCategory} />
-                    </div>
+        return (
+            <React.Fragment>
+                {this.state.loading? <div className="isloading"><i className="fas fa-spinner"/>Loading...</div> :
+                    <React.Fragment>
+                        <div className="title">
+                            <TitleCategory val="รายการประเภทของรถ" />
+                            <TitleBtnCategory 
+                            addCategory={this.addCategory} 
+                            statusAddCategory={this.state.statusAddCategory} />
+                        </div>
 
-                    {this.state.statusAddCategory && 
-                    <AddCategory 
-                    submitAddCategory={this.submitAddCategory} 
-                    setFile={this.setFile} 
-                    setName={this.setName} 
-                    setPrice={this.setPrice}  />}
+                        {this.state.statusAddCategory && 
+                        <AddCategory 
+                        submitAddCategory={this.submitAddCategory} 
+                        setFile={this.setFile} 
+                        setName={this.setName} 
+                        setPrice={this.setPrice}  />}
 
-                    <div>
-                        <TableCategory data={this.state.data} deleteProduct={this.deleteProduct}/>
-                    </div>
-                </React.Fragment>
-            );
-        }
+                        <div>
+                            <TableCategory data={this.state.data} deleteProduct={this.deleteProduct}/>
+                        </div>
+                    </React.Fragment>
+                }
+            </React.Fragment>
+        )
     }
 }
 

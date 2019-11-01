@@ -1,17 +1,9 @@
-.isloading{
+.profile{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
-    height: 100%;
-}
-
-.emp{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .form-emp{
-      background-color: #AED6F1;
+    form{
+      background-color: rgb(241, 193, 174);
       padding: 15px;
       border-radius: 15px;
       display: grid;
@@ -30,13 +22,13 @@
         }
         button{
           padding: 5px 10px;
-          background-color: #F8C471;
+          background-color: rgb(113, 138, 248);
           border: none;
           border-radius: 5px;
           color: white;
           outline: none;
           cursor: pointer;
-          border-bottom: 3px solid rgb(180, 142, 80);
+          border-bottom: 3px solid rgb(118, 80, 180);
         }
       }
       .name{
@@ -44,6 +36,5 @@
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 10px;
       }
-
     }
   }

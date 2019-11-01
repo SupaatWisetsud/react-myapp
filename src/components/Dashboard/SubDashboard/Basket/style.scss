@@ -1,0 +1,59 @@
+.basket{
+    padding: 5px 10px;
+    border-radius: 15px;
+    width: 45%;
+    height: 515px;
+    background-color: #fff;
+    color: #333333;
+    overflow: auto;
+
+    .sub-basket{
+      height: 350px ;
+      overflow: auto;
+      background-color: #EBF5FB;
+      border: 2px solid #36E380;
+      border-radius: 15px;
+      padding: 10px;
+
+      .header-items-basket{
+        div{
+            background-color: #28B163;
+            color: white;
+            border: none;
+        }
+      }
+
+      .items-basket{
+        display: grid;
+        grid-gap: 3px;
+        grid-template-columns: repeat(5, 1fr);
+        border-bottom: 1px solid #333333;
+        margin-bottom: 10px;
+
+        div{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .items-basket-count{
+              margin: 0 5px;
+          }
+        }
+      }
+    }
+
+    .items-total-basket{
+      color: #333333;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding: 0 20px;
+    }
+    .items-confrim-basket{
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      margin-top: 10px;
+    }
+  }

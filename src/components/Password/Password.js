@@ -11,14 +11,8 @@ class Password extends React.Component{
 
     state = {
         loading : false,
-        error : {
-            status : false,
-            message : ''
-        },
-        success : {
-            status : false,
-            message : ''
-        },
+        error : { status : false, message : '' },
+        success : { status : false, message : ''},
         password : '',
         newPassword : '',
         confrimNewPassword : ''
@@ -90,32 +84,14 @@ class Password extends React.Component{
         }
     }
 
-    setPassword = e => {
-        this.setState({
-            password : e
-        });
-    }
-    setNewPassword = e => {
-        this.setState({
-            newPassword : e
-        });
-    }
-    setConfrimNewPassword = e => {
-        this.setState({
-            confrimNewPassword : e
-        });
-    }
+    setPassword = e => {this.setState({password : e})}
+    setNewPassword = e => {this.setState({newPassword : e})}
+    setConfrimNewPassword = e => {this.setState({confrimNewPassword : e})}
 
     onDismiss = () => {
         this.setState({
-            success : {
-                status : false,
-                message : ""
-            },
-            error : {
-                status : false,
-                message : ""
-            }
+            success : {status : false, message : ""},
+            error : { status : false, message : "" }
         });
     }
     render(){
@@ -123,11 +99,11 @@ class Password extends React.Component{
             <React.Fragment>
                 {
                     this.state.error.status && 
-                    <Alert message={this.state.error.message} onClick={this.onDismiss} />
+                    <Alert message={this.state.error.message} onClick={this.onDismiss} color="danger" />
                 }
                 {
                     this.state.success.status && 
-                    <Alert message={this.state.success.message} onClick={this.onDismiss} />
+                    <Alert message={this.state.success.message} onClick={this.onDismiss} color="success" />
                 }
                 <TitlePassword />
                 <div className="password">
@@ -135,7 +111,11 @@ class Password extends React.Component{
                         this.state.loading ? 
                         <div className="isLoading"><i className="fas fa-spinner"/>Loading...</div> 
                         : 
-                        <FormEditPassword />
+                        <FormEditPassword 
+                        onSubmitPassword={this.onSubmitPassword} 
+                        setPassword={this.setPassword}
+                        setNewPassword={this.setNewPassword}
+                        setConfrimNewPassword={this.setConfrimNewPassword} />
                     }
                 </div>
             </React.Fragment>

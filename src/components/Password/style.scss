@@ -5,3 +5,20 @@
     font-size: 24px;
     height: 100%;
 }
+
+.form-edit-password{
+    background-color: #D7BDE2;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    .edit-password{
+      margin-top: 20px;
+      input{
+        padding: 10px 20px;
+        border: none;
+        outline: none;
+        border-radius: 15px;
+        font-size: 24px;
+      }
+    }
+  }

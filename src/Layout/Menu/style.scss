@@ -1,0 +1,80 @@
+.menu{
+    position: fixed;
+    left: 0;
+    width: 230px;
+    height: 100%;
+    background-color: #333;
+
+    .logo{
+        color: white;
+        text-align: center;
+        font-size: 18px;
+        background-color: #3498DB;
+    }
+
+    .status{
+        text-align: center;
+        margin-top: 35px;
+        color: white;   
+    }
+
+    .profile{
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        img{
+            width: 62px;
+            height: 62px;
+            border-radius: 50px;
+            object-fit: cover;
+            object-position: center;
+            background-color: white;
+        }
+        p{
+            margin-top: 5px;
+            color: white;
+        }
+    }
+
+    .select-menu{
+        &::-webkit-scrollbar-thumb{
+        border-radius: 15px;
+        box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #85929E;
+        }
+
+        &::-webkit-scrollbar-track{
+            border-radius: 15px;
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+        }
+        &::-webkit-scrollbar{
+            width: 7px;
+        }
+
+        width: 100%;
+        list-style: none;
+        margin-top: 15px;
+        max-height: 65vh;
+        overflow: auto;
+        li{
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        background-color: #333;
+        cursor: pointer;
+        color: white;
+
+        i{
+            margin-right: 5px;
+        }
+
+        &:hover{
+            background-color: rgb(117, 120, 121);
+        }
+        }
+    }
+}
