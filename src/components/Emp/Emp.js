@@ -1,38 +1,24 @@
 import React from 'react';
 import axios from 'axios';
-import { decode } from 'jsonwebtoken';
+
+import {AddEmp,ListEmp} from './SubEmp';
 
 const endpoint = "http://localhost:4000/api";
 
+
 class Emp extends React.Component {
     
-    constructor(props){
-        super(props);
-
-        this.state = {
-            loading : false,
-            data : [],
-            addEmp : false,
-            username : '',
-            password : '',
-            fname : '',
-            lname : '',
-            email : '',
-            file : '',
-            phone : ''
-        }
-        
-        this.switchAdd = this.switchAdd.bind(this);
-        this.setUsername = this.setUsername.bind(this);
-        this.setPassword = this.setPassword.bind(this);
-        this.setFname = this.setFname.bind(this);
-        this.setLname = this.setLname.bind(this);
-        this.setEmail = this.setEmail.bind(this);
-        this.setFile = this.setFile.bind(this);
-        this.setPhone = this.setPhone.bind(this);
-        this.subMit = this.subMit.bind(this);
-        this.deleteUser = this.deleteUser.bind(this);
-        this.statusUser = this.statusUser.bind(this);
+    state = {
+        loading : false,
+        data : [],
+        addEmp : false,
+        username : '',
+        password : '',
+        fname : '',
+        lname : '',
+        email : '',
+        file : '',
+        phone : ''
     }
 
     async componentDidMount(){
@@ -162,142 +148,13 @@ class Emp extends React.Component {
     }
 
     render(){
-        
         if(this.state.loading){
-            return <div style={{
-                width : "100%",
-                height : "100%",
-                display : "flex",
-                justifyContent : "center",
-                alignItems : "center",
-                fontSize : 24,
-                color : "#333333"
-            }}><i className="fas fa-spinner"/>Loading...</div> 
+            return <div className="isloading"><i className="fas fa-spinner"/>Loading...</div> 
         }else{
             if(this.state.addEmp){
-                return (
-                    <React.Fragment>
-                        <div className="title">
-                            <div className="items-title-product">
-                                <h1>
-                                    เพิ่มพนักงาน
-                                </h1>
-                            </div>
-                            <div className="items-title-btn">
-                                <button className="add-product" onClick={this.switchAdd}>
-                                    กลับไปหน้ารายการพนักงาน
-                                </button>
-                            </div>
-                        </div>
-                        <div className="emp">
-                            <form className="form-emp" onSubmit={this.subMit} >
-                                <div>
-                                    <input type="text" placeholder="Username" onChange={this.setUsername} />
-                                </div>
-                                <div>
-                                    <input type="password" placeholder="Password" onChange={this.setPassword}/>
-                                </div>
-                                <div className="name">
-                                    <div>
-                                        <input type="text" placeholder="Frist name" onChange={this.setFname} />
-                                    </div>
-                                    <div>
-                                        <input type="text" placeholder="Last name" onChange={this.setLname} />
-                                    </div>
-                                </div>
-                                <div>
-                                    <input type="email" placeholder="examp@mail.com" onChange={this.setEmail} />
-                                </div>
-                                <div>
-                                    <input type="file" onChange={this.setFile} />
-                                </div>
-                                <div>
-                                    <input type="number" placeholder="09X-XXX-XXXX" onChange={this.setPhone} />
-                                </div>
-                                <div>
-                                    <button>เพิ่มพนักงาน</button>
-                                </div>
-                            </form>
-                        </div>
-                    </React.Fragment>
-                );
+                return <AddEmp />
             }else{
-                return (
-                    <React.Fragment>
-                        <div className="title">
-                            <div className="items-title-product">
-                                <h1>
-                                    รายการพนักงาน
-                                </h1>
-                            </div>
-                            <div className="items-title-btn">
-                                <button className="add-product" onClick={this.switchAdd}>
-                                    เพิ่มพนักงาน
-                                </button>
-                            </div>
-                        </div>
-                        <div className="emp">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        {/* <th>รหัส</th> */}
-                                        <th>ชื่อ</th>
-                                        <th>อีเมลล์</th>
-                                        <th>เบอร์โทร</th>
-                                        <th>รูป</th>
-                                        <th>สถานะ</th>
-                                        <th>ลบ</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.state.data.map((n, index) => {
-                                        
-                                        return (
-                                            <tr key={index} style={(index % 2)? {backgroundColor : "#FFF"} : {backgroundColor : "#EBF5FB"}}>
-                                                {/* <td>
-                                                    {n._id}
-                                                </td> */}
-                                                <td>
-                                                    {n.firstName + " " + n.lastName}
-                                                </td>
-                                                <td>
-                                                    {n.email}
-                                                </td>
-                                                <td>
-                                                    0{n.phone}
-                                                </td>
-                                                <td>
-                                                    <img src={"http://localhost:4000" + n.profileImg} alt={n.username} style={{width:80,height:60, objectFit : "cover", borderRadius : 10}}/>
-                                                </td>
-                                                <td>
-                                                    {decode(localStorage.getItem('token'))._doc._id !== n._id? 
-                                                        <button onClick={e => this.statusUser(n._id, n.status)} style={n.status === 'a'? {backgroundColor:"#AF7AC5"}:{backgroundColor:"#85C1E9"} }>
-                                                            {n.status === 'a'? "ผู้ดูแล":"พนักงานทั่วไป"}
-                                                        </button> 
-                                                        :
-                                                        <button disabled style={{backgroundColor:"#AF7AC5", opacity : "0.3", cursor : "no-drop"}}>
-                                                            {n.status === 'a'? "ผู้ดูแล":"พนักงานทั่วไป"}
-                                                        </button>
-                                                    }
-                                                    
-                                                </td>
-                                                <td>
-                                                    {decode(localStorage.getItem('token'))._doc._id !== n._id? 
-                                                        <button className="delete" onClick={e => this.deleteUser(n._id)} >ลบ</button>
-                                                        :
-                                                        <button className="delete" disabled style={{opacity : "0.3", cursor : "no-drop"}} >ลบ</button>
-                                                    }
-                                                    
-                                                </td>
-                                            </tr>
-                                        )
-                                        
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                    </React.Fragment>
-                )
+                return <ListEmp />
             }
         }
     }

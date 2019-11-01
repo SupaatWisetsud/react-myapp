@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Kanit&display=swap');
+@import "./framework.scss";
+
 *{
     margin: 0;
     padding: 0;
@@ -8,19 +10,6 @@
     user-select: none;
 }
 
-.fa-spinner{
-  margin-right: 10px;
-  animation: spinner 3s infinite;
-}
-
-@keyframes spinner {
-  0% {
-    transform: rotateZ(0deg);
-  }
-  100% {
-    transform: rotateZ(360deg);
-  }
-}
 
 //page login
 .warpper{
@@ -219,7 +208,7 @@
             background-color: #3498DB;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
             height: 54px;
             padding: 0 20px;
             .bar{
@@ -247,11 +236,6 @@
           padding: 20px;
           height: 91vh;
           overflow: auto;
-          .title{
-            display: flex;
-            align-items: center;
-            list-style: none;
-            flex-wrap: wrap;
             
             .items-title{
                 display: flex;
@@ -264,63 +248,7 @@
                   font-size: 24px;
                 }
             }
-            .items-title-btn{
-              button{
-                margin-left: 10px;
-                display: inline-block;
-                text-decoration: none;
-                border-radius: 15px;
-                padding: 5px 10px;
-                color: white;
-                outline: none;
-                cursor: pointer;
-                border: none;
-                font-size: 17px;
-
-                span{
-                  color: rgb(128, 128, 128);
-                  margin-left: 5px;
-                  padding: 5px;
-                  background-color: rgba(255, 255, 255, 0.404);
-                }
-              }
-
-              .car-queue{
-                background-color: #85C1E9;
-              }
-              .car-success, .add-product{
-                background-color: #82E0AA;
-              }
-              .car-receive{
-                background-color: #F7DC6F;
-              }
-            }
-          }
-          .add-product{
-            width: 100%;
-            background-color: rgb(162, 200, 224);
-            padding: 5px;
-            border-radius: 15px;
-
-            input{
-              border-radius: 15px;
-              margin-right: 10px;
-              border: none;
-              padding: 5px 10px;
-              outline: none;
-              font-size: 16px;
-            }
-            button{
-              padding: 5px 8px;
-              border-radius: 15px;
-              border: none;
-              background-color: rgb(152, 89, 204);
-              border-bottom: 3px solid rgb(59, 24, 88);
-              color: white;
-              outline: none;
-              cursor: pointer;
-            }
-          }
+          
           .shop{
             border-top: 2px solid rgb(72, 204, 129);
             width: 100%;
@@ -375,18 +303,6 @@
                 .selete-product{
                   width: 100%;
                   text-align: center;
-                  button{
-                    width: 100%;
-                    border : none;
-                    background-color: #52BE80 ;
-                    border-bottom: 2px solid rgb(63, 146, 99);
-                    padding: 5px 0px;
-                    border-radius: 15px;
-                    color: white;
-                    outline: none;
-                    font-size: 17px;
-                    cursor: pointer;
-                  }
                 }
               }
 
@@ -476,7 +392,7 @@
               }
             }
           }
-          .table-product, .emp, .password, .profile{
+          .emp, .password, .profile{
             border-top: 2px solid rgb(72, 204, 129);
             width: 100%;
             padding: 20px;
@@ -507,14 +423,6 @@
           }
 
           td{
-            button{
-                border-radius: 15px;
-                padding: 5px 10px;
-                color: white;
-                border: none;
-                outline: none;
-                cursor: pointer;
-            }
             .edit{
                 background-color: #F7DC6F;
             }
@@ -646,48 +554,7 @@
   }
 }
 
-.container-error, .container-success{
-  position: fixed;
-  top: 5%;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 99;
-}
-.flash{
-  position: relative;
-  max-width: 500px;
-  background-color: #EC7063;
-  animation: out 5s ease-in-out forwards;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
-.success{
-  position: relative;
-  max-width: 500px;
-  background-color: rgb(99, 236, 122);
-  animation: out 5s ease-in-out forwards;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-}
-.close-popup{
-  position: absolute;
-  right: -4px;
-  top: -14px;
-  border: none;
-  background-color: transparent;
-  color: white;
-  font-weight: 900;
-  font-size: 24px;
-  outline: none;
-  cursor: pointer;
-}
+
 
 @keyframes out{
   0%{

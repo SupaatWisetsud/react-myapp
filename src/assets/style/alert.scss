@@ -1,0 +1,75 @@
+
+.alert{
+  position: fixed;
+  top: 5%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+
+    .danger{
+    position: relative;
+    max-width: 500px;
+    background-color: #EC7063;
+    animation: out 5s ease-in-out forwards;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    }
+    .success{
+    position: relative;
+    max-width: 500px;
+    background-color: rgb(87, 201, 106);
+    animation: out 5s ease-in-out forwards;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    }
+    .primary{
+    position: relative;
+    max-width: 500px;
+    background-color: rgb(99, 131, 236);
+    animation: out 5s ease-in-out forwards;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    }
+    .secondary {
+    position: relative;
+    max-width: 500px;
+    background-color: rgb(145, 145, 145);
+    animation: out 5s ease-in-out forwards;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    }
+    .info  {
+    position: relative;
+    max-width: 500px;
+    background-color: rgb(92, 185, 247);
+    animation: out 5s ease-in-out forwards;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .close-popup{
+    position: absolute;
+    right: -4px;
+    top: -14px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-weight: 900;
+    font-size: 24px;
+    outline: none;
+    cursor: pointer;
+    }
+}

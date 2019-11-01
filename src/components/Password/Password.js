@@ -2,33 +2,26 @@ import React from 'react';
 import axios from 'axios';
 import { decode } from 'jsonwebtoken';
 
+import {Alert} from '../Component';
+import {FormEditPassword, TitlePassword} from './SubPassword';
+
 const endpoint = "http://localhost:4000/api";
 
 class Password extends React.Component{
 
-    constructor(props){
-        super(props);
-        
-        this.state = {
-            loading : false,
-            error : {
-                status : false,
-                message : ''
-            },
-            success : {
-                status : false,
-                message : ''
-            },
-            password : '',
-            newPassword : '',
-            confrimNewPassword : ''
-        }
-
-        this.onSubmitPassword = this.onSubmitPassword.bind(this);
-        this.setPassword = this.setPassword.bind(this);
-        this.setNewPassword = this.setNewPassword.bind(this);
-        this.setConfrimNewPassword = this.setConfrimNewPassword.bind(this);
-        this.onDismiss = this.onDismiss.bind(this);
+    state = {
+        loading : false,
+        error : {
+            status : false,
+            message : ''
+        },
+        success : {
+            status : false,
+            message : ''
+        },
+        password : '',
+        newPassword : '',
+        confrimNewPassword : ''
     }
 
     onSubmitPassword = async e => {
@@ -130,56 +123,19 @@ class Password extends React.Component{
             <React.Fragment>
                 {
                     this.state.error.status && 
-                    <div className="container-error">
-                        <div className="flash">
-                            {this.state.error.message}
-                            <button className="close-popup" onClick={this.onDismiss}>X</button>
-                        </div>
-                    </div>
+                    <Alert message={this.state.error.message} onClick={this.onDismiss} />
                 }
                 {
                     this.state.success.status && 
-                    <div className="container-success">
-                        <div className="success">
-                            {this.state.success.message}
-                            <button className="close-popup" onClick={this.onDismiss}>X</button>
-                        </div>
-                    </div>
+                    <Alert message={this.state.success.message} onClick={this.onDismiss} />
                 }
-                <div className="title">
-                    <div className="items-title">
-                        <h2>
-                            แก้รหัสผ่าน
-                        </h2>
-                    </div>
-                </div>
+                <TitlePassword />
                 <div className="password">
                     {
                         this.state.loading ? 
-                        <div style={{
-                            width : "100%",
-                            height : "100%",
-                            display : "flex",
-                            justifyContent : "center",
-                            alignItems : "center",
-                            fontSize : 24,
-                            color : "#333333"
-                        }}><i className="fas fa-spinner"/>Loading...</div> 
+                        <div className="isLoading"><i className="fas fa-spinner"/>Loading...</div> 
                         : 
-                        <form className="form-edit-password" onSubmit={this.onSubmitPassword}>
-                            <div className="edit-password">
-                                <input type="password" placeholder="รหัสเดิม" ref={this.setPassword} />
-                            </div>
-                            <div className="edit-password">
-                                <input type="password" placeholder="รหัสใหม่" ref={this.setNewPassword} />
-                            </div>
-                            <div className="edit-password">
-                                <input type="password" placeholder="ยืนยันรหัสใหม่" ref={this.setConfrimNewPassword} />
-                            </div>
-                            <div className="edit-password">
-                                <button>ยืนยัน</button>
-                            </div>
-                        </form>
+                        <FormEditPassword />
                     }
                 </div>
             </React.Fragment>

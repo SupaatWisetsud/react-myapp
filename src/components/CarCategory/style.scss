@@ -1,0 +1,31 @@
+.isloading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    height: 100%;
+}
+
+.title{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-add-category{
+    padding: 2px 4px;
+    background-color: rgb(214, 234, 248);
+    border-radius: 15px;
+    border: 2px solid #2980B9;
+    margin: 10px 0;
+    .form-add-category-input{
+        padding: 5px;
+        font-size: 15px;
+        border: none;
+        border-radius: 10px;
+        outline: none;
+        margin: 0 15px;
+    }
+}
+
+.table-category{
+}

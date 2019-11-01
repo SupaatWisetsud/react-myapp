@@ -1,43 +1,30 @@
 import React from 'react';
 import axios from 'axios';
-import Moment from 'react-moment';
-import { connect } from 'react-redux';
-import ReactToPrint from "react-to-print";
 
-import Basket from './Basket';
-import Bill from './Bill';
+import { connect } from 'react-redux';
+
+
+import {ItemsTitle,ItemsTitleBtn,ListCategory,SelectOrder,ListOrder,Basket,Bill} from './SubDashboard';
+import { Alert } from '../Component';
 
 const endpoint = "http://localhost:4000/api";
 
 class Home extends React.Component {
     
-    constructor(props){
-        super(props);
-        this.state = { 
-            data: [],
-            loading : false,
-            error : {
-                status : false,
-                message : ''
-            },
-            order : "h",
-            dataOrder : [],
-            dateStart : '',
-            dateEnd : '',
-            dataPrint : {}
-        };
-        this.addProduct = this.addProduct.bind(this);
-        this.confrimProduct = this.confrimProduct.bind(this);
-        this.order = this.order.bind(this);
-        this.changeDateStart = this.changeDateStart.bind(this);
-        this.changeDateEnd = this.changeDateEnd.bind(this);
-        this.seleteOrderDate = this.seleteOrderDate.bind(this);
-        this.uploadStatus = this.uploadStatus.bind(this);
-        this.reset = this.reset.bind(this);
-        this.onDismiss = this.onDismiss.bind(this);
-        this.setPrint = this.setPrint.bind(this);
-    }
-    
+    state = { 
+        data: [],
+        loading : false,
+        error : {
+            status : false,
+            message : ''
+        },
+        order : "h",
+        dataOrder : [],
+        dateStart : '',
+        dateEnd : '',
+        dataPrint : {}
+    };
+    componentRef = React.createRef();
     async componentDidMount(){
         this.setState({
             loading : true
@@ -56,8 +43,6 @@ class Home extends React.Component {
         });
         
     }
-
-    componentRef = React.createRef();
 
     addProduct = data => {   
         this.props.dispatch({
@@ -223,202 +208,43 @@ class Home extends React.Component {
     }
 
     render(){
-        let total = 0;
-        let x = [];
-        this.state.dataOrder.forEach(n => {
-            if(this.state.order === n.status){
-                x.push(
-                    <tr key={n._id}>
-                        <td>{n._id}</td>
-                        <td>
-                            {n.data.map( (x, index) => <p key={index}> {x.name} x{x.count} </p> )}
-                        </td>
-                        <td>{n.price}</td>
-                        <td><Moment format="DD/MM/YYYY : HH:mm">{n.dateTime}</Moment></td>
-                        <td>
-                            {n.status === 'q' && <button className="que-btn" onClick={ e => this.uploadStatus(n._id, "s")} >รอคิวล้าง</button> }
-                            {n.status === 's' && <button className="success-btn" onClick={ e => this.uploadStatus(n._id, "r")} >รอรับรถ</button> }
-                            {n.status === 'r' && 
-                                <div onClick={ e => this.setPrint(n)}>
-                                    <ReactToPrint
-                                        trigger={() => <button className="receive-btn" >พิมใบเสร็จ</button>}
-                                        content={() => this.componentRef}
-                                    />
-                                </div>
-                            }
-                        </td>
-                    </tr>
-                );
-            }
-        })
         return(
             <React.Fragment>
-                {
-                    this.state.error.status && 
-                    <div className="container-error">
-                        <div className="flash">
-                            {this.state.error.message}
-                            <button className="close-popup" onClick={this.onDismiss}>X</button>
-                        </div>
-                    </div>
-                }
                 <div style={{display : "none"}}>
                     <Bill data={this.state.dataPrint} ref={el => (this.componentRef = el)} />
                 </div>
+                {
+                    this.state.error.status && 
+                    <Alert onClick={this.onDismiss} message={this.state.error.message} color="danger" />
+                }
                 <div className="title">
-                    <div className="items-title">
-                        {this.state.order === "h" && <h2>ระบบจัดการหน้าร้าน Car ca Service</h2>}
-                        {this.state.order === "q" && <h2>รายการรอคิวล้าง</h2>}
-                        {this.state.order === "s" && <h2>รายการล้างเสร็จแล้ว</h2>}
-                        {this.state.order === "r" && <h2>รายการรับรถแล้ว</h2>}
-                    </div>
-                    <div className="items-title-btn">
-                        {
-                            this.state.order === "h" && 
-                            <React.Fragment>
-                                <button style={{backgroundColor : "#85C1E9"}} onClick={ e => this.order("q")} >รายการรอคิวล้าง</button>
-                                <button style={{backgroundColor : "#58D68D"}} onClick={ e => this.order("s")} >รานการล้างเสร็จแล้ว</button>
-                                <button style={{backgroundColor : "#C39BD3"}} onClick={ e => this.order("r")} >รายการที่รับรถแล้ว</button>
-                            </React.Fragment>
-                        }
-                        {
-                            this.state.order === "q" && 
-                            <React.Fragment>
-                                <button style={{backgroundColor : "#5D6D7E"}} onClick={ e => this.order("h")} >หน้าหลัก</button>
-                                <button style={{backgroundColor : "#D6EAF8"}} disabled >รายการรอคิวล้าง</button>
-                                <button style={{backgroundColor : "#58D68D"}} onClick={ e => this.order("s")} >รานการล้างเสร็จแล้ว</button>
-                                <button style={{backgroundColor : "#C39BD3"}} onClick={ e => this.order("r")} >รายการที่รับรถแล้ว</button>
-                            </React.Fragment>
-                        }
-                        {
-                            this.state.order === "s" && 
-                            <React.Fragment>
-                                <button style={{backgroundColor : "#5D6D7E"}} onClick={ e => this.order("h")} >หน้าหลัก</button>
-                                <button style={{backgroundColor : "#85C1E9"}} onClick={ e => this.order("q")} >รายการรอคิวล้าง</button>
-                                <button style={{backgroundColor : "#D5F5E3"}} disabled >รานการล้างเสร็จแล้ว</button>
-                                <button style={{backgroundColor : "#C39BD3"}} onClick={ e => this.order("r")} >รายการที่รับรถแล้ว</button>
-                            </React.Fragment>
-                        }
-                        {
-                            this.state.order === "r" && 
-                            <React.Fragment>
-                                <button style={{backgroundColor : "#5D6D7E"}} onClick={ e => this.order("h")} >หน้าหลัก</button>
-                                <button style={{backgroundColor : "#85C1E9"}} onClick={ e => this.order("q")} >รายการรอคิวล้าง</button>
-                                <button style={{backgroundColor : "#58D68D"}} onClick={ e => this.order("s")} >รานการล้างเสร็จแล้ว</button>
-                                <button style={{backgroundColor : "#E8DAEF"}} disabled >รายการที่รับรถแล้ว</button>
-                            </React.Fragment>
-                        }
-                        
-                    </div>
+                    <ItemsTitle order={this.state.order} />
+                    <ItemsTitleBtn order={this.state.order} _order={this.order} />
                 </div>
                 {
                     this.state.order === "h" || 
-                    <div style={{
-                        backgroundColor : "#D6EAF8",
-                        padding : 10,
-                        display : "flex",
-                        justifyContent : "center",
-                        marginTop : 10,
-                        alignItems : "center",
-                        border : "3px solid #5DADE2"
-                    }}>
-                        <p style={{marginRight : 5}}>ตั้งแต่วัน</p>
-                        <input type="date" style={{borderRadius : 5, padding : 5, border : "none"}} onChange={this.changeDateStart} />
-                        <p style={{margin : "0 10px"}}> ถึง </p>
-                        <input type="date" style={{borderRadius : 5, padding : 5, border : "none"}} onChange={this.changeDateEnd} />
-                        <button style={{
-                            margin : "0 10px",
-                            padding : 5, 
-                            borderRadius : 5,
-                            border : "none", 
-                            backgroundColor : "#C39BD3",
-                            color : "#FFF",
-                            borderBottom : "3px solid #AF7AC5",
-                            outline : "none",
-                            cursor : "pointer"
-                        }} onClick={this.seleteOrderDate} >
-                            <i className="fas fa-search" style={{marginRight : 5}}></i>
-                            ค้นหา
-                        </button>
-                        <button style={{
-                            padding : 5, 
-                            borderRadius : 5,
-                            border : "none", 
-                            backgroundColor : "#7DCEA0",
-                            color : "#FFF",
-                            borderBottom : "3px solid #229954",
-                            outline : "none",
-                            cursor : "pointer"
-                        }} onClick={this.reset}>
-                            <i className="fas fa-history" style={{marginRight : 5}}></i>
-                            รีเซ็ต
-                        </button>
-                    </div>
+                    <SelectOrder 
+                    seleteOrderDate={this.seleteOrderDate} 
+                    reset={this.reset} 
+                    changeDateStart={this.changeDateStart} 
+                    changeDateEnd={this.changeDateEnd} />
                 }
                 <div className="shop">
                     {
                         this.state.order === "h" && 
                         <React.Fragment>
-                            <div className="product">
-                                {this.state.loading && <div className="list-product-loading"><i className="fas fa-spinner"/>Loading...</div> }
-                                {this.state.data.map(n => {
-                                    return (
-                                        <div className="items-product" key={n._id}>
-                                            <div className="img-product">
-                                                <img src={"http://localhost:4000" + n.image} alt={n.name}/>
-                                            </div>
-                                            <div className="title-product">
-                                                {n.name}
-                                            </div>
-                                            <div className="price-product">
-                                                ราคา {n.price} บาท
-                                            </div>
-                                            <div className="selete-product">
-                                                <button onClick={ e => this.addProduct(n) }>เลือก</button>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                            <div className="basket">
-                                <div className="title-basket">
-                                    <h2>
-                                        รายการล้างรถ
-                                    </h2>
-                                </div>
-                                <div className="sub-basket">
-                                    <div className="items-basket header-items-basket">
-                                        <div>รูป</div> 
-                                        <div>ชื่อ</div>
-                                        <div>จำนวน</div> 
-                                        <div>ราคา</div> 
-                                        <div>ลบ</div> 
-                                    </div>
 
-                                    <Basket />
-                                    
-                                </div>
-                                <div className="items-total-basket">
-                                    <div>
-                                        <h2>
-                                            ราคารวม :
-                                        </h2>
-                                    </div>
-                                    <div>
-                                        <h2>
-                                            {this.props.basket.forEach( n => {
-                                                let x = Number.parseInt(n.count) * Number.parseInt(n.price);
-                                                total += x;
-                                            })}
-                                            {total} บาท
-                                        </h2>
-                                    </div>
-                                </div>
-                                <div className="items-confrim-basket">
-                                    <button onClick={ this.confrimProduct } className="confrim">ทำรายการ</button>
-                                    <button onClick={ e => this.props.dispatch({type : "destroy", payload : []})} className="all-close">ยกเลิกรายการ</button>
-                                </div>
-                            </div>
+                            <ListCategory 
+                            data={this.state.data} 
+                            loading={this.state.loading} 
+                            addCategory={this.addProduct} />
+
+                            <Basket 
+                            basket={this.props.basket} 
+                            confrimProduct={this.confrimProduct} 
+                            dispatch={this.props.dispatch}
+                            addProduct={this.addProduct}/>
+                            
                         </React.Fragment>
                     }
                     {
@@ -428,20 +254,12 @@ class Home extends React.Component {
                                 this.state.loading? 
                                 <div className="list-product-loading"><i className="fas fa-spinner"/>Loading...</div>
                                 : 
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Order ID</th>
-                                            <th>details</th>
-                                            <th>total</th>
-                                            <th>date</th>
-                                            <th>status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {x.map(n => n)}
-                                    </tbody>
-                                </table>
+                                <ListOrder 
+                                dataOrder={this.state.dataOrder} 
+                                order={this.state.order} 
+                                componentRef={this.componentRef} 
+                                setPrint={this.setPrint}
+                                uploadStatus={this.uploadStatus}/>
                             }
                         </React.Fragment>
                     }

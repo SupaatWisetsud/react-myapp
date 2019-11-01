@@ -49,13 +49,13 @@ export default ({onClickEvent, menu}) => {
     
     data.forEach((n, index) => {
         if(status === "a"){
-            x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+            x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={menu === n.name? {backgroundColor:"#5499C7"}:null} >
                         <i className={n.icon} />
                         <p>{n.display}</p>
                     </li>)
         }else{
             if(n.status === "u"){
-                x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={menu === n.name? {backgroundColor:"#5499C7"}:{}} >
+                x.push(<li key={index} onClick={ e => onClickEvent(n.name)} style={menu === n.name? {backgroundColor:"#5499C7"}:null} >
                             <i className={n.icon} />
                             <p>{n.display}</p>
                         </li>) 
@@ -66,14 +66,10 @@ export default ({onClickEvent, menu}) => {
     return (
         <div className="menu menu-show">
             <div className="logo">
-                <h1>
-                    Car ca
-                </h1>
+                <h1>Car ca</h1>
             </div>
             <div className="status">
-                <p>
-                    สถานะ : { status === "a"? "ผู้ดูแล":"พนักงานทั่วไป" }
-                </p>
+                <p>สถานะ : { status === "a"? "ผู้ดูแล":"พนักงานทั่วไป" }</p>
             </div>
             <div className="profile">
                 <img src={"http://localhost:4000"+profileImg} alt={username} style={status === "a"? {border :"3px solid #AF7AC5"}:{border :"3px solid #85C1E9"}} />

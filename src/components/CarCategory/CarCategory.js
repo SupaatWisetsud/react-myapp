@@ -1,26 +1,20 @@
 import React from 'react';
 import axios from 'axios';
 
+import {AddCategory,TableCategory,TitleBtnCategory,TitleCategory} from './SubCategory';
+
 const endpoint = "http://localhost:4000/api";
 
-class Product extends React.Component{
+class CarCategory extends React.Component{
 
-    constructor(props){
-        super(props);
-        this.state = { 
-            data: [],
-            loading : false,
-            addProduct : false,
-            name : '',
-            price : '',
-            file : ''
-        };
-        this.addProduct = this.addProduct.bind(this);
-        this.submitAddProduct = this.submitAddProduct.bind(this);
-        this.setName = this.setName.bind(this);
-        this.setPrice = this.setPrice.bind(this);
-        this.setFile = this.setFile.bind(this);
-    }
+    state = { 
+        data: [],
+        loading : false,
+        statusAddCategory : false,
+        name : '',
+        price : '',
+        file : ''
+    };
 
     async componentDidMount(){
         this.setState({
@@ -34,9 +28,9 @@ class Product extends React.Component{
         });
     }
     
-    addProduct = () => {
+    addCategory = () => {
         this.setState({
-            addProduct : !this.state.addProduct
+            statusAddCategory : !this.state.statusAddCategory
         });  
     }
 
@@ -60,7 +54,7 @@ class Product extends React.Component{
         }
     }
 
-    submitAddProduct = async e => {
+    submitAddCategory = async e => {
         e.preventDefault();
 
         this.setState({
@@ -104,84 +98,34 @@ class Product extends React.Component{
     }
 
     render(){
-        
         if(this.state.loading){
-            return <div style={{
-                width : "100%",
-                height : "100%",
-                display : "flex",
-                justifyContent : "center",
-                alignItems : "center",
-                fontSize : 24,
-                color : "#333333"
-            }}><i className="fas fa-spinner"/>Loading...</div> 
+            return <div className="isloading"><i className="fas fa-spinner"/>Loading...</div> 
         }
         else{
             return (
                 <React.Fragment>
                     <div className="title">
-                        <div className="items-title-product">
-                            <h1>
-                                รายการประเภทของรถ
-                            </h1>
-                        </div>
-                        <div className="items-title-btn">
-                            <button className="add-product" onClick={this.addProduct}>
-                                {!this.state.addProduct? "เพิ่มประเภท" : "ยกเลิกการเพิ่มประเภท"}
-                            </button>
-                        </div>
+                        <TitleCategory val="รายการประเภทของรถ" />
+                        <TitleBtnCategory 
+                        addCategory={this.addCategory} 
+                        statusAddCategory={this.state.statusAddCategory} />
                     </div>
-                    {
-                        this.state.addProduct && 
-                        <form className="add-product" onSubmit={this.submitAddProduct} >
-                            <input type="text" placeholder="Name car" onChange={ this.setName } />
-                            <input type="number" placeholder="Price car" onChange={ this.setPrice } />
-                            <input type="file" onChange={ this.setFile } />
-                            <button type="submit">เพิ่มสินค้า</button>
-                        </form>
-                    }
-                    <div className="table-product">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ชื่อ</th>
-                                    <th>ราคา</th>
-                                    <th>รูป</th>
-                                    <th>แก้ไข</th>
-                                    <th>ลบ</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.data.map((n, index) => {
-                                    return (
-                                        <tr key={index} style={(index % 2)? {backgroundColor : "#FFF"} : {backgroundColor : "#EBF5FB"}}>
-                                            <td>
-                                                {n.name}
-                                            </td>
-                                            <td>
-                                                {n.price}
-                                            </td>
-                                            <td>
-                                                <img src={"http://localhost:4000" + n.image} alt={n.name} style={{width:100,height:60}}/>
-                                            </td>
-                                            <td>
-                                                <button className="edit">แก้ไข</button>
-                                            </td>
-                                            <td>
-                                                <button className="delete" onClick={ e => this.deleteProduct(n._id) } >ลบ</button>
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+
+                    {this.state.statusAddCategory && 
+                    <AddCategory 
+                    submitAddCategory={this.submitAddCategory} 
+                    setFile={this.setFile} 
+                    setName={this.setName} 
+                    setPrice={this.setPrice}  />}
+
+                    <div>
+                        <TableCategory data={this.state.data} deleteProduct={this.deleteProduct}/>
                     </div>
                 </React.Fragment>
             );
         }
     }
-    
 }
 
 
-export default Product;
+export default CarCategory;

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import './index.scss';
+import '../src/assets/style/index.scss';
 import * as serviceWorker from './serviceWorker';
 
 import { menuReducer, basketReducer } from './reducer';
