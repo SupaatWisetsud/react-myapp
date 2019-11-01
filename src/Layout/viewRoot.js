@@ -25,13 +25,14 @@ const viewRoot = ({menu, dispatch}) => {
             <Menu onClickEvent={onClickEvent} menu={menu}/>
             <div className="content">
                 <div className="header">
-                    <Link to="/logout" id="logout">ออกจากระบบ</Link>
+                    <Link to="/logout" id="logout">
+                        <i className="fas fa-sign-out-alt"/> ออกจากระบบ
+                    </Link>
                 </div>
                 <div className="sub-content">
                     <Content menu={menu} />
                 </div>
             </div>
-            
         </div>
     );
 }

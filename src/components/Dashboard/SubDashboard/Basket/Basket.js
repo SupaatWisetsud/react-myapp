@@ -30,15 +30,25 @@ export default ({basket, confrimProduct, dispatch, addProduct}) => {
                             <h5>{n.name}</h5>
                         </div>
                         <div>
-                            <Button val="-" onClick={ e => downProduct(n)} color="#F1948A" borderBottom="#C0392B" />
+                            <Button val="-" 
+                            onClick={ e => downProduct(n)} 
+                            color="#F1948A" 
+                            borderBottom="#C0392B" 
+                            style={{padding : "2px 5px", borderRadius : 5}} />
+
                             <h5 className="items-basket-count">{n.count}</h5>
-                            <Button val="+" onClick={ e => addProduct(n)} color="#5DADE2" borderBottom="#2471A3" />
+
+                            <Button val="+" 
+                            onClick={ e => addProduct(n)} 
+                            color="#5DADE2" 
+                            borderBottom="#2471A3" 
+                            style={{padding : "2px 5px", borderRadius : 5}} />
                         </div>
                         <div>
                             <h5>{n.price}</h5>
                         </div>
                         <div>
-                            <Button val="ลบ" onClick={ e => deleteProduct(n)} color="#E74C3C" borderBottom="rgb(194, 66, 52)" />
+                            <Button icon="fas fa-trash" onClick={ e => deleteProduct(n)} color="#E74C3C" borderBottom="rgb(194, 66, 52)" />
                         </div>
                     </div>
                 ))}
@@ -48,8 +58,8 @@ export default ({basket, confrimProduct, dispatch, addProduct}) => {
                 <div><h2>{total} บาท</h2></div>
             </div>
             <div className="items-confrim-basket">
-                <Button val="ทำรายการ" onClick={ confrimProduct } color="#5DADE2" borderBottom="#2980B9" />
-                <Button val="ยกเลิกรายการ" onClick={ e => dispatch({type : "destroy", payload : []}) } color="#E74C3C" borderBottom="#A93226" />
+                <Button val="ทำรายการ" onClick={ confrimProduct } color="#5DADE2" borderBottom="#2980B9" icon="fas fa-check" />
+                <Button val="ยกเลิกรายการ" onClick={ e => dispatch({type : "destroy", payload : []}) } color="#E74C3C" borderBottom="#A93226" icon="fas fa-trash" />
             </div>
         </div>
     )

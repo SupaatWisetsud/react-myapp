@@ -19,7 +19,8 @@ class Home extends React.Component {
         dataOrder : [],
         dateStart : '',
         dateEnd : '',
-        dataPrint : {}
+        dataPrint : {},
+        modal : false
     };
     componentRef = React.createRef();
     async componentDidMount(){
@@ -32,6 +33,7 @@ class Home extends React.Component {
 
     confrimProduct = async () => {
         if(this.props.basket[0] !== undefined){
+            // this.setState({modal:true});
             if(window.confirm("ยืนยันการทำรายการไหม ?")){
                 const data = this.props.basket;
                 await axios.post(endpoint + '/order', {data});
