@@ -28,7 +28,7 @@ class Profile extends React.Component {
                 <div className="title">
                     <div className="items-title">
                         <h2>
-                            แก้ไขโปรไฟล์ตัวเอง
+                        <i className="fas fa-edit"></i> แก้ไขโปรไฟล์ตัวเอง
                         </h2>
                     </div>
                 </div>

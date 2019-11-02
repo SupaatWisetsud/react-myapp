@@ -6,6 +6,6 @@ export default ({ submitAddCategory, setFile, setName, setPrice}) => (
         <input className="form-add-category-input" type="text" placeholder="Name car" onChange={setName} />
         <input className="form-add-category-input" type="number" placeholder="Price car" onChange={setPrice} />
         <input type="file" onChange={setFile} />
-        <Button val="เพิ่มสินค้า" color="#BB8FCE" borderBottom="#7D3C98" />
+        <Button val="เพิ่มประเภท" icon="fas fa-truck-loading" color="#BB8FCE" borderBottom="#7D3C98" />
     </form>
 )
